@@ -5,17 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .dashboard-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #f8bbd0; /* Light pink border around photo */
+        }
+
+        .info-list {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .info-list li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-list li span {
+            font-weight: bold;
+            color: #880e4f; /* Dark pink for labels */
+        }
+
+        h2 {
+            color: #ad1457; /* Deep pink color */
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Your Profile</h2>
-    <ul>
-        {% for key, value in profile.items() %}
-            <li><strong>{{ key }}:</strong> {{ value }}</li>
-        {% endfor %}
-    </ul>
-
-    <form action="{{ url_for('matching') }}">
-        <button type="submit">Find Matches</button>
-    </form>
+    <div class="dashboard-container">
+        <img src="{{ url_for('static', filename='profile_photo.jpg') }}" alt="Profile Photo" class="profile-photo">
+        <h2>{{ profile['Name'] }}'s Dashboard</h2>
+        <ul class="info-list">
+            <li><span>User ID:</span> {{ profile['User ID'] }}</li>
+            <li><span>Name:</span> {{ profile['Name'] }}</li>
+            <li><span>Age:</span> {{ profile['Age'] }}</li>
+            <li><span>Gender:</span> {{ profile['Gender'] }}</li>
+            <li><span>Gender Preference:</span> {{ profile['Gender Preference'] }}</li>
+            <li><span>Location:</span> {{ profile['Location'] }}</li>
+            <li><span>Interests:</span> {{ ', '.join(profile['Interests']) }}</li>
+        </ul>
+    </div>
 </body>
 </html>
