@@ -42,30 +42,20 @@ def create():
 
     if request.method == 'POST':
         user_id = request.form['user_id']
+        password = request.form['password']
         name = request.form['name']
         age = request.form['age']
         gender = request.form['gender']
         gender_preference = request.form['gender_preference']
-        location = request.form['location']
+        province = request.form['province']
+        city = request.form['city']
         selected_interests = request.form.getlist('interests')
 
-        # Validation
-        if len(user_id) < 1 or len(user_id) > 16:
-            flash('User ID must be between 1 and 16 characters.', 'danger')
-            return render_template('create.html', interests=predefined_interests)
-
-        conn = get_db_connection()
-        existing_user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (user_id,)).fetchone()
-        if existing_user:
-            flash('User ID already exists. Please choose another.', 'danger')
-            conn.close()
-            return render_template('create.html', interests=predefined_interests)
-
-        # Convert selected interests to a comma-separated string
         interests_str = ','.join(selected_interests)
 
-        conn.execute('INSERT INTO user_profiles (user_id, name, age, gender, gender_preference, location, interests) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                     (user_id, name, age, gender, gender_preference, location, interests_str))
+        conn = get_db_connection()
+        conn.execute('INSERT INTO user_profiles (user_id, password, name, age, gender, gender_preference, province, city, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                     (user_id, password, name, age, gender, gender_preference, province, city, interests_str))
         conn.commit()
         conn.close()
 

@@ -5,6 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const provinces = {
+                "Alberta": ["Calgary", "Edmonton", "Red Deer", "Lethbridge"],
+                "British Columbia": ["Vancouver", "Victoria", "Kelowna", "Surrey"],
+                "Manitoba": ["Winnipeg", "Brandon", "Steinbach", "Thompson"],
+                "New Brunswick": ["Fredericton", "Moncton", "Saint John", "Bathurst"],
+                "Newfoundland and Labrador": ["St. John's", "Corner Brook", "Gander", "Mount Pearl"],
+                "Nova Scotia": ["Halifax", "Sydney", "Dartmouth", "Truro"],
+                "Ontario": ["Toronto", "Ottawa", "Mississauga", "Hamilton"],
+                "Prince Edward Island": ["Charlottetown", "Summerside", "Stratford", "Cornwall"],
+                "Quebec": ["Montreal", "Quebec City", "Laval", "Gatineau"],
+                "Saskatchewan": ["Saskatoon", "Regina", "Prince Albert", "Moose Jaw"]
+            };
+
+            const provinceSelect = document.getElementById("province");
+            const citySelect = document.getElementById("city");
+
+            provinceSelect.addEventListener("change", function() {
+                const selectedProvince = this.value;
+                const cities = provinces[selectedProvince];
+
+                citySelect.innerHTML = ""; // Clear previous cities
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+
+                citySelect.style.display = "block"; // Show the city dropdown
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="create-container">
@@ -13,6 +47,9 @@
 
             <label for="user_id">User ID:</label>
             <input type="text" id="user_id" name="user_id" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
 
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
@@ -35,8 +72,25 @@
                 <option value="no_preference">No Preference</option>
             </select>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" required>
+            <label for="province">Province:</label>
+            <select id="province" name="province" required>
+                <option value="" disabled selected>Select a province</option>
+                <option value="Alberta">Alberta</option>
+                <option value="British Columbia">British Columbia</option>
+                <option value="Manitoba">Manitoba</option>
+                <option value="New Brunswick">New Brunswick</option>
+                <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                <option value="Nova Scotia">Nova Scotia</option>
+                <option value="Ontario">Ontario</option>
+                <option value="Prince Edward Island">Prince Edward Island</option>
+                <option value="Quebec">Quebec</option>
+                <option value="Saskatchewan">Saskatchewan</option>
+            </select>
+
+            <label for="city">City:</label>
+            <select id="city" name="city" required style="display: none;">
+                <!-- Cities will be populated based on province selection -->
+            </select>
 
             <label for="interests">Select Interests:</label>
             <div class="interests-grid">
@@ -49,6 +103,7 @@
             </div>
 
             <button type="submit">Create Profile</button>
+            <a href="{{ url_for('login') }}" class="back-to-login-button">Back to Login</a>
         </form>
     </div>
 </body>
