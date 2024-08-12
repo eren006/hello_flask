@@ -1,0 +1,105 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fce4ec; /* Light pink background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+h2 {
+    color: #ad1457; /* Deep pink color */
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #880e4f; /* Darker pink for labels */
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+}
+
+input[type="text"], input[type="password"], input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #f8bbd0; /* Light pink border */
+    border-radius: 6px; /* Slightly more rounded inputs */
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #fce4ec; /* Very light pink background */
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus, select:focus {
+    border-color: #d81b60; /* Bright pink focus border */
+    outline: none;
+    box-shadow: 0 0 6px rgba(216, 27, 96, 0.5); /* Pink glow on focus */
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ec407a; /* Pink button background */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+}
+
+button:hover {
+    background-color: #d81b60; /* Darker pink on hover */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li.success {
+    color: #4caf50; /* Green for success */
+}
+
+ul li.danger {
+    color: #e53935; /* Red for danger */
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+a {
+    color: #ec407a; /* Pink for links */
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
