@@ -9,14 +9,16 @@ body {
     height: 100vh;
 }
 
-.container {
+.create-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 12px; /* Slightly more rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    max-width: 400px; /* Adjusted to a single column width */
     width: 100%;
     text-align: center;
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    height: 90vh;
 }
 
 h2 {
@@ -24,12 +26,13 @@ h2 {
     margin-bottom: 20px;
     text-align: center;
     font-size: 24px;
+    width: 100%;
 }
 
 form {
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Arrange all content in a single column */
     align-items: center;
 }
 
@@ -77,19 +80,22 @@ button:hover {
     background-color: #d81b60; /* Darker pink on hover */
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+/* Interests Grid Styling */
+.interests-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for interests */
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-ul li.success {
-    color: #4caf50; /* Green for success */
+.interest-item {
+    display: flex;
+    align-items: center;
 }
 
-ul li.danger {
-    color: #e53935; /* Red for danger */
-    margin-bottom: 10px;
-    font-weight: bold;
+.interest-item input[type="checkbox"] {
+    margin-right: 8px;
 }
 
 a {

@@ -7,52 +7,49 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2>Create Profile</h2>
-    <form method="POST" action="{{ url_for('create') }}">
-        <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" required><br><br>
-        
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required><br><br>
-        
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="non-binary">Non-binary</option>
-        </select><br><br>
-        
-        <label for="gender_preference">Gender Preference:</label>
-        <select id="gender_preference" name="gender_preference" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="non-binary">Non-binary</option>
-            <option value="no_preference">No Preference</option>
-        </select><br><br>
-        
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required><br><br>
-        
-        <label for="interests">Select Interests:</label><br>
-        {% for interest in interests %}
-            <input type="checkbox" id="interest_{{ interest }}" name="interests" value="{{ interest }}">
-            <label for="interest_{{ interest }}">{{ interest }}</label><br>
-        {% endfor %}
-        
-        <br><button type="submit">Create Profile</button>
-    </form>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
+    <div class="create-container">
+        <form method="POST" action="{{ url_for('create') }}">
+            <h2>Create Profile</h2>
+
+            <label for="user_id">User ID:</label>
+            <input type="text" id="user_id" name="user_id" required>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="non-binary">Non-binary</option>
+            </select>
+
+            <label for="gender_preference">Gender Preference:</label>
+            <select id="gender_preference" name="gender_preference" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="no_preference">No Preference</option>
+            </select>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="interests">Select Interests:</label>
+            <div class="interests-grid">
+                {% for interest in interests %}
+                    <div class="interest-item">
+                        <input type="checkbox" id="interest_{{ interest }}" name="interests" value="{{ interest }}">
+                        <label for="interest_{{ interest }}">{{ interest }}</label>
+                    </div>
                 {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+            </div>
+
+            <button type="submit">Create Profile</button>
+        </form>
+    </div>
 </body>
 </html>
