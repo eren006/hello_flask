@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Potential Matches</h2>
+    <p>This is where the matching logic would be implemented.</p>
+
+    <form action="{{ url_for('dashboard') }}">
+        <button type="submit">Back to Dashboard</button>
+    </form>
+</body>
+</html>

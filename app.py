@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 
 app = Flask(__name__)
@@ -22,13 +22,13 @@ def login():
         user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (username,)).fetchone()
         conn.close()
         if user and user['name'] == password:
+            session['user_id'] = user['user_id']  # Store user_id in session
             flash('Login successful!', 'success')
-            return redirect(url_for('dashboard', username=username))
+            return redirect(url_for('dashboard'))
         else:
             flash('Invalid credentials, please try again.', 'danger')
     return render_template('login.html')
 
-@app.route('/create', methods=['GET', 'POST'])
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     predefined_interests = [
@@ -74,26 +74,40 @@ def create():
 
     return render_template('create.html', interests=predefined_interests)
 
-
-    return render_template('create.html', interests=predefined_interests)
-
-@app.route('/dashboard/<username>')
-def dashboard(username):
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        flash('Please log in to access your dashboard.', 'danger')
+        return redirect(url_for('login'))
+    
     conn = get_db_connection()
-    user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (username,)).fetchone()
+    user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (session['user_id'],)).fetchone()
     conn.close()
+    
     if user:
         profile = {
+            "User ID": user["user_id"],
             "Name": user["name"],
             "Age": user["age"],
             "Gender": user["gender"],
+            "Gender Preference": user["gender_preference"],
             "Location": user["location"],
             "Interests": user["interests"].split(',')
         }
-        return render_template('dashboard.html', username=username, profile=profile)
+        return render_template('dashboard.html', profile=profile)
     else:
-        flash('Please log in to access the dashboard.', 'danger')
+        flash('User not found.', 'danger')
         return redirect(url_for('login'))
+
+@app.route('/matching')
+def matching():
+    if 'user_id' not in session:
+        flash('Please log in to perform matching.', 'danger')
+        return redirect(url_for('login'))
+
+    # Logic for matching would go here (e.g., fetching potential matches based on preferences)
+    # For now, we just render a placeholder page
+    return render_template('matching.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
