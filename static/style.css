@@ -48,3 +48,16 @@ ul li.success {
 ul li.danger {
     color: red;
 }
+
+button {
+    display: inline-block; /* Ensure button is visible */
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}

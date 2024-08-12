@@ -17,6 +17,12 @@
         
         <button type="submit">Login</button>
     </form>
+
+    <br>
+    <!-- Create Profile Button -->
+    <form action="{{ url_for('create') }}">
+        <button type="submit">Create Profile</button>
+    </form>
     
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

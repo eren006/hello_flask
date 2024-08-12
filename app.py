@@ -24,6 +24,7 @@ def login():
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
+    print("Create route accessed")  # This should print in your terminal
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
