@@ -58,19 +58,19 @@ def create():
         city = request.form['city']
         smoking = request.form['smoking']== 'true' 
         drinking = request.form['drinking']== 'true' 
-        languages = request.form['languages']
+        languages = request.form.getlist('languages')
         selected_interests = request.form.getlist('interests')
-
+        languages_str= ','.join(languages)
         interests_str = ','.join(selected_interests)
 
         conn = get_db_connection()
-        conn.execute('''INSERT INTO user_profiles 
-               (user_id, password, name, age, gender, gender_preference, province, city, smoking, drinking, languages, interests) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-               (user_id, password, name, age, gender, gender_preference, province, city, smoking, drinking, languages, interests_str))
+        conn.execute('''INSERT INTO User 
+               (UserID, password, name, age, gender, gender_preference, location, interests,languages) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+               (user_id, password, name, age, gender, gender_preference, city, interests_str,languages_str))
         conn.commit()
         conn.close()
-
+        print("Profile created successfully!!")
         flash('Profile created successfully!', 'success')
         return redirect(url_for('login'))
 
