@@ -55,12 +55,19 @@ def compute_score(current_user_id, users):
         # Age
         age_difference = abs(current_user['age'] - potential_match['age'])
         age_score = custom_age_score(age_difference)
-
+        
+        # Like/Dislike Adjustments
+        like_adjustment = 0.05 * len(potential_match_obj.liked_users)
+        dislike_adjustment = -0.05 * len(potential_match_obj.disliked_users)
+        
         # Weighted Score
         if gender_score == 0:
             total_score = 0
         else:
-            total_score = (0.4 * interest_score + 0.2 * age_score + 0.1 * location_score + 0.1 * language_score + 0.1 * smoking_score + 0.1 * drinking_score)
+            total_score = float(round(0.4 * interest_score + 0.2 * age_score + 
+                                      0.1 * location_score + 0.1 * language_score + 
+                                      0.1 * smoking_score + 0.1 * drinking_score +
+                                      like_adjustment + dislike_adjustment,2))
 
         scores.append((potential_match['user_id'], total_score))
 
