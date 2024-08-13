@@ -1,19 +1,19 @@
-body, html {
+/* General Styles */
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: 'Roboto', sans-serif;
-}
-
-body {
     background: url('/static/background.jpg') no-repeat center center fixed;
     background-size: cover;
-    display: flex;
-    flex-direction: column;
     color: white;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
+/* Header Styles */
 header {
     width: 100%;
     padding: 20px 0;
@@ -21,9 +21,10 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
     z-index: 10;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
 }
 
 .header-bar {
@@ -39,6 +40,7 @@ header h1 {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
+    text-transform: uppercase; /* Uppercase for a more formal look */
 }
 
 header nav a {
@@ -66,10 +68,9 @@ header nav a.create-profile-button {
 
 header nav a.create-profile-button:hover {
     background-color: #d81b60; /* Darker pink on hover */
-    color: white;
 }
 
-
+/* Hero Section */
 .hero-section {
     height: 100vh;
     display: flex;
@@ -78,7 +79,7 @@ header nav a.create-profile-button:hover {
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
-    color: #ec407a; /* Same pink color as the button */
+    color: #ec407a; /* Matching pink color for consistency */
     font-weight: bold;
 }
 
@@ -86,6 +87,7 @@ header nav a.create-profile-button:hover {
     font-size: 48px;
     line-height: 1.2;
     font-weight: 700;
+    text-transform: uppercase; /* Uppercase for a stronger statement */
 }
 
 .hero-section p {
@@ -93,15 +95,16 @@ header nav a.create-profile-button:hover {
     margin-top: 20px;
 }
 
+/* Form Styles */
 .content {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
     padding: 40px 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background for content */
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque background for clarity */
     border-radius: 12px;
     color: #333;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow for a more defined look */
 }
 
 form {
@@ -113,133 +116,44 @@ form label {
     margin-bottom: 10px;
     color: #333;
     font-weight: bold;
+    text-transform: uppercase; /* Uppercase labels for a clean, modern look */
 }
 
 form input[type="text"], form input[type="password"] {
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 20px;
     border-radius: 6px;
     border: 1px solid #ccc;
     box-sizing: border-box;
     font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus, form input[type="password"]:focus {
+    border-color: #ec407a; /* Highlight border on focus */
+    outline: none;
 }
 
 form button {
-    padding: 12px;
-    background-color: #333;
+    padding: 14px;
+    background-color: #131112;
     color: white;
     border: none;
     border-radius: 6px;
     font-size: 18px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
 }
 
 form button:hover {
-    background-color: #555;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-}
-
-
-a.create-profile-button, a.back-to-login-button {
-    color: #ec407a; /* Pink for links */
-    text-decoration: none;
-    margin-top: 15px;
-    z-index: 4; /* Ensure links are above other content */
-}
-
-a.create-profile-button:hover, a.back-to-login-button:hover {
-    text-decoration: underline;
-}
-
-/* Interest Grid Styling */
-.interests-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 10px; /* Space between checkboxes */
-    margin-bottom: 20px;
-    text-align: left;
-    z-index: 4; /* Ensure the interests grid is above the background hover */
-}
-
-.interest-item {
-    display: flex;
-    align-items: center;
-    z-index: 4; /* Ensure each interest item is above other content */
-}
-
-.interest-item input[type="checkbox"] {
-    margin-right: 8px;
-    z-index: 4; /* Ensure the checkboxes are above other content */
-}
-
-/* Language Grid Styling */
-.languages-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 10px; /* Space between checkboxes */
-    margin-bottom: 20px;
-    text-align: left;
-    z-index: 4; /* Ensure the languages grid is above the background hover */
-}
-
-.language-item {
-    display: flex;
-    align-items: center;
-    z-index: 4; /* Ensure each language item is above other content */
-}
-
-.language-item input[type="checkbox"] {
-    margin-right: 8px;
-    z-index: 4; /* Ensure the checkboxes are above other content */
-}
-
-/* Location Select Styling */
-.location-group {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    z-index: 5; /* Ensure the location group is above other content */
-}
-
-.location-item {
-    flex: 1;
-    padding: 0 5px;
-    z-index: 5; /* Ensure the location items are above other content */
-}
-
-.location-item select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #f8bbd0; /* Light pink border */
-    border-radius: 6px;
-    background-color: #fce4ec; /* Very light pink background */
-    box-sizing: border-box;
-    display: block; /* Ensure dropdown is visible */
-    z-index: 5; /* Ensure location dropdowns are above other content */
-}
-
-/* General content styling */
-.create-container.content {
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-    padding: 20px 40px; /* Added padding for space inside the container */
-    margin: 20px auto; /* Center the container horizontally with auto margin */
-    border-radius: 12px; /* Rounded corners for a softer look */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border-top: 5px solid #ec407a; /* Pink top border */
-    border-bottom: 5px solid #ec407a; /* Pink bottom border */
-    max-width: 600px; /* Set a maximum width for the container */
+    background-color: #d81b60;
 }
 
 button[type="submit"] {
     width: 100%;
     padding: 12px;
-    background-color: #342a2d; /* 初始粉红色背景 */
+    background-color: #211a1c;
     color: white;
     border: none;
     border-radius: 6px;
@@ -250,15 +164,32 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background: linear-gradient(45deg, #ff9a9e, #fecfef); /* 渐变粉红色 */
-    color: white;
+    background: linear-gradient(45deg, #ff9a9e, #fecfef);
     transition: background 0.5s ease;
 }
 
 button[type="submit"]:focus {
     outline: none;
-    box-shadow: 0 0 10px rgba(236, 64, 122, 0.5); /* 聚焦时的阴影效果 */
+    box-shadow: 0 0 10px rgba(236, 64, 122, 0.5);
 }
 
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3); /* Top shadow to anchor the footer */
+}
 
-
+/* Content Container Styling */
+.create-container.content {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 20px 40px;
+    margin: 20px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #ec407a;
+    border-bottom: 5px solid #ec407a;
+    max-width: 600px;
+}
