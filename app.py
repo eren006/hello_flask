@@ -25,13 +25,16 @@ def login():
         username = request.form['username']
         password = request.form['password']
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM User WHERE UserID = ?', (username)).fetchone()
+        user = conn.execute("SELECT * FROM user WHERE UserId = ? AND password = ?", (username, password)).fetchone()
         conn.close()
-        if user and user['password'] == password:
-            session['user_id'] = user['user_id']  # Store user_id in session
+        print(user)
+        if user:
+            print("Login successfull!")
+            session['user_id'] = user['UserId']
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
         else:
+            print("Login unsuccessfull :(")
             flash('Invalid credentials, please try again.', 'danger')
     return render_template('login.html')
 
