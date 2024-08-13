@@ -178,6 +178,27 @@ a.create-profile-button:hover, a.back-to-login-button:hover {
     z-index: 4; /* Ensure the checkboxes are above other content */
 }
 
+/* Language Grid Styling */
+.languages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Space between checkboxes */
+    margin-bottom: 20px;
+    text-align: left;
+    z-index: 4; /* Ensure the languages grid is above the background hover */
+}
+
+.language-item {
+    display: flex;
+    align-items: center;
+    z-index: 4; /* Ensure each language item is above other content */
+}
+
+.language-item input[type="checkbox"] {
+    margin-right: 8px;
+    z-index: 4; /* Ensure the checkboxes are above other content */
+}
+
 /* Location Select Styling */
 .location-group {
     display: flex;
