@@ -24,9 +24,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM User WHERE UserID = ?', (username,)).fetchone()
+        user = conn.execute('SELECT * FROM User WHERE UserID = ?', (username)).fetchone()
         conn.close()
-        if user and user['name'] == password:
+        if user and user['password'] == password:
             session['user_id'] = user['user_id']  # Store user_id in session
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
