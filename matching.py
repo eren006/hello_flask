@@ -34,10 +34,10 @@ def compute_score(current_user_id, users):
         gender_score = 1 if current_user['gender_preference'] == potential_match['gender'] else 0
 
         # Smoking Preference
-        smoking_score = 1 if current_user['smoking_preference'] == potential_match['smoking_preference'] else 0
+        smoking_score = 1 if current_user['smoking_preference'] == potential_match['smoking_preference'] else -1
 
         # Drinking Preference
-        drinking_score = 1 if current_user['drinking_preference'] == potential_match['drinking_preference'] else 0
+        drinking_score = 1 if current_user['drinking_preference'] == potential_match['drinking_preference'] else -1
 
         # Location
         location_score = 1 if current_user['city'] == potential_match['city'] else 0
