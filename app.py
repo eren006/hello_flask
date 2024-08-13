@@ -63,9 +63,14 @@ def create():
         drinking = request.form['drinking']== 'true' 
         languages = request.form.getlist('languages')
         selected_interests = request.form.getlist('interests')
-        languages_str= ','.join(languages)
+        print(smoking,drinking)
+        if smoking == True:
+            selected_interests.append('smoking')
+        if drinking == True:
+            selected_interests.append('drinking')
+        print(selected_interests)
         interests_str = ','.join(selected_interests)
-
+        languages_str= ','.join(languages)
         conn = get_db_connection()
         conn.execute('''INSERT INTO User 
                (UserID, password, name, age, gender, gender_preference, location, interests,languages) 
