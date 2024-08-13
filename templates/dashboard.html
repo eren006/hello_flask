@@ -26,20 +26,24 @@
             border: 4px solid #f8bbd0; /* Light pink border around photo */
         }
 
-        .info-list {
-            list-style-type: none;
-            padding: 0;
+        .profile-container {
             text-align: left;
         }
 
-        .info-list li {
+        .profile-item {
             margin-bottom: 10px;
             font-size: 16px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .info-list li span {
+        .label {
             font-weight: bold;
             color: #880e4f; /* Dark pink for labels */
+        }
+
+        .value {
+            color: #333;
         }
 
         h2 {
@@ -74,19 +78,52 @@
     <div class="dashboard-container">
         <img src="{{ url_for('static', filename='profile_photo.jpg') }}" alt="Profile Photo" class="profile-photo">
         <h2>{{ profile['Name'] }}'s Dashboard</h2>
-        <ul class="info-list">
-            <li><span>User ID:</span> {{ profile['User ID'] }}</li>
-            <li><span>Name:</span> {{ profile['Name'] }}</li>
-            <li><span>Age:</span> {{ profile['Age'] }}</li>
-            <li><span>Gender:</span> {{ profile['Gender'] }}</li>
-            <li><span>Gender Preference:</span> {{ profile['Gender Preference'] }}</li>
-            <li><span>Province:</span> {{ profile['Province'] }}</li>
-            <li><span>City:</span> {{ profile['City'] }}</li>
-            <li><span>Smoking:</span> {{ profile['Smoking'] }}</li>
-            <li><span>Drinking:</span> {{ profile['Drinking'] }}</li>
-            <li><span>Languages:</span> {{ ', '.join(profile['Languages']) }}</li>
-            <li><span>Interests:</span> {{ ', '.join(profile['Interests']) }}</li>
-        </ul>
+        <div class="profile-container">
+            <div class="profile-item">
+                <span class="label">User ID:</span>
+                <span class="value">{{ profile['User ID'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Name:</span>
+                <span class="value">{{ profile['Name'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Age:</span>
+                <span class="value">{{ profile['Age'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Gender:</span>
+                <span class="value">{{ profile['Gender'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Gender Preference:</span>
+                <span class="value">{{ profile['Gender Preference'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Province:</span>
+                <span class="value">{{ profile['Province'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">City:</span>
+                <span class="value">{{ profile['City'] }}</span>
+            </div>
+            <!-- <div class="profile-item">
+                <span class="label">Smoking:</span>
+                <span class="value">{{ profile['Smoking'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Drinking:</span>
+                <span class="value">{{ profile['Drinking'] }}</span>
+            </div> -->
+            <div class="profile-item">
+                <span class="label">Languages:</span>
+                <span class="value">{{ ', '.join(profile['Languages']) }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Interests:</span>
+                <span class="value">{{ ', '.join(profile['Interests']) }}</span>
+            </div>
+        </div>
 
         <!-- Edit Profile Button -->
         <a href="{{ url_for('edit_profile') }}" class="edit-profile-button">Edit Profile</a>
