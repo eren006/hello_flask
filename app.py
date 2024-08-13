@@ -30,7 +30,7 @@ def login():
         print(user)
         if user:
             print("Login successfull!")
-            session['user_id'] = user['UserId']
+            session['user_id'] = user[4]
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
         else:
@@ -84,20 +84,20 @@ def dashboard():
     if 'user_id' not in session:
         flash('Please log in to access your dashboard.', 'danger')
         return redirect(url_for('login'))
-    
+    print(session['user_id'])
     conn = get_db_connection()
-    user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (session['user_id'],)).fetchone()
+    user = conn.execute('SELECT * FROM User WHERE UserID = ?', (session['user_id'],)).fetchone()
     conn.close()
-    
+    print(user)
     if user:
         profile = {
-            "User ID": user["user_id"],
-            "Name": user["name"],
-            "Age": user["age"],
-            "Gender": user["gender"],
-            "Gender Preference": user["gender_preference"],
-            "Location": user["location"],
-            "Interests": user["interests"].split(',')
+            "User ID": user[4],
+            "Name": user[3],
+            "Age": user[0],
+            "Gender": user[1],
+            "Gender Preference": user[7],
+            "Location": user[2],
+            "Interests": user[5].split(',')
         }
         return render_template('dashboard.html', profile=profile)
     else:
