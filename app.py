@@ -32,13 +32,14 @@ def login():
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     predefined_interests = [
-        'Traveling', 'Playing the piano', 'Photography', 'Cooking', 'Watching movies',
-        'Dancing', 'Swimming', 'Music', 'Singing', 'Drawing', 'Playing computer games',
-        'Hiking', 'Cycling', 'Reading', 'Yoga', 'Painting', 'Gaming', 'Skateboarding',
-        'Fitness', 'Basketball', 'Baking', 'Coding', 'Running', 'Writing', 'Chess',
-        'Surfing', 'Videography', 'Soccer', 'Gardening', 'Art', 'Boxing', 'Exercising',
-        'Crafting', 'Skating', 'Meditation', 'Baseball', 'Badminton', 'Guitar'
-    ]
+    'Art', 'Badminton', 'Baking', 'Baseball', 'Basketball', 'Boxing', 'Chess',
+    'Coding', 'Cooking', 'Crafting', 'Cycling', 'Dancing', 'Drawing', 'Exercising',
+    'Fitness', 'Gaming', 'Gardening', 'Guitar', 'Hiking', 'Meditation', 'Music',
+    'Painting', 'Photography', 'Playing computer games', 'Playing the piano',
+    'Reading', 'Running', 'Singing', 'Skateboarding', 'Skating', 'Soccer',
+    'Surfing', 'Swimming', 'Traveling', 'Videography', 'Watching movies', 'Writing', 'Yoga'
+]
+
 
     if request.method == 'POST':
         user_id = request.form['user_id']
