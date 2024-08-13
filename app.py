@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import sqlite3
+import sqlitecloud
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+
 
 def get_db_connection():
-    conn = sqlite3.connect('users.db')
-    conn.row_factory = sqlite3.Row
+    db_name = 'dating_app_test2'
+    # Open the connection to SQLite Cloud
+    conn = sqlitecloud.connect("sqlitecloud://cbgnacvcik.sqlite.cloud:8860?apikey=Mx2cK8ScRiNgZl31SFhJCezNWBXAtRBbtsdvvBVA5xw")
+    conn.execute(f"USE DATABASE {db_name}")
+    print("DB connection has been established ")
+
     return conn
 
 @app.route('/')
@@ -19,7 +23,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (username,)).fetchone()
+        user = conn.execute('SELECT * FROM User WHERE UserID = ?', (username,)).fetchone()
         conn.close()
         if user and user['name'] == password:
             session['user_id'] = user['user_id']  # Store user_id in session
