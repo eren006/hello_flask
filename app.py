@@ -63,12 +63,10 @@ def create():
         drinking = request.form['drinking']== 'true' 
         languages = request.form.getlist('languages')
         selected_interests = request.form.getlist('interests')
-        print(smoking,drinking)
         if smoking == True:
             selected_interests.append('smoking')
         if drinking == True:
             selected_interests.append('drinking')
-        print(selected_interests)
         interests_str = ','.join(selected_interests)
         languages_str= ','.join(languages)
         conn = get_db_connection()
@@ -111,12 +109,20 @@ def dashboard():
     
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
+    predefined_interests = [
+    'Art', 'Badminton', 'Baking', 'Baseball', 'Basketball', 'Boxing', 'Chess',
+    'Coding', 'Cooking', 'Crafting', 'Cycling', 'Dancing', 'Drawing', 'Exercising',
+    'Fitness', 'Gaming', 'Gardening', 'Guitar', 'Hiking', 'Meditation', 'Music',
+    'Painting', 'Photography', 'Playing computer games', 'Playing the piano',
+    'Reading', 'Running', 'Singing', 'Skateboarding', 'Skating', 'Soccer',
+    'Surfing', 'Swimming', 'Traveling', 'Videography', 'Watching movies', 'Writing', 'Yoga'
+]
     if 'user_id' not in session:
         flash('Please log in to access your profile.', 'danger')
         return redirect(url_for('login'))
     
     conn = get_db_connection()
-    user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (session['user_id'],)).fetchone()
+    user = conn.execute('SELECT * FROM User WHERE userID = ?', (session['user_id'],)).fetchone()
 
     if request.method == 'POST':
         # Process the form data and update the user's profile in the database
@@ -129,18 +135,22 @@ def edit_profile():
         new_smoking = request.form['smoking']
         new_drinking = request.form['drinking']
         new_languages = ','.join(request.form.getlist('languages'))
+        
+        if new_smoking == True:
+            new_interests.append('smoking')
+        if new_drinking == True:
+            new_interests.append('drinking')
         new_interests = ','.join(request.form.getlist('interests'))
-
-        conn.execute('''UPDATE user_profiles SET name = ?, age = ?, gender = ?, gender_preference = ?, province = ?, city = ?, smoking = ?, drinking = ?, languages = ?, interests = ? WHERE user_id = ?''',
-                     (new_name, new_age, new_gender, new_gender_preference, new_province, new_city, new_smoking, new_drinking, new_languages, new_interests, session['user_id']))
+        conn.execute('''UPDATE User SET name = ?, age = ?, gender = ?, gender_preference = ?, location = ?, languages = ?, interests = ? WHERE UserID = ?''',
+                     (new_name, new_age, new_gender, new_gender_preference,new_city,new_languages, new_interests, session['user_id']))
         conn.commit()
         conn.close()
-
+        print("Profile updated successfully!")
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('dashboard'))
 
     conn.close()
-    return render_template('edit_profile.html', profile=user)
+    return render_template('edit_profile.html', profile=user, interests=predefined_interests)
 
 @app.route('/matching')
 def matching():
