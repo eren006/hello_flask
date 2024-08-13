@@ -1,111 +1,204 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fce4ec; /* Light pink background */
+body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: url('/static/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    overflow-x: hidden;
+}
+
+header {
+    width: 100%;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 10;
+    text-align: center;
+}
+
+.header-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+header nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+header nav a.create-profile-button {
+    background-color: #ec407a; /* Pink background for the Create Profile button */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+header nav a.create-profile-button:hover {
+    background-color: #d81b60; /* Darker pink on hover */
+    color: white;
+}
+
+
+.hero-section {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
-
-.create-container {
-    background-color: #fff;
+    text-align: center;
     padding: 20px;
-    border-radius: 12px; /* Slightly more rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px; /* Adjusted to a single column width */
-    width: 100%;
-    text-align: center;
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-    height: 90vh;
+    box-sizing: border-box;
+    color: #ec407a; /* Same pink color as the button */
+    font-weight: bold;
 }
 
-h2 {
-    color: #ad1457; /* Deep pink color */
-    margin-bottom: 20px;
-    text-align: center;
+.hero-section h2 {
+    font-size: 48px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.hero-section p {
     font-size: 24px;
+    margin-top: 20px;
+}
+
+.content {
     width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background for content */
+    border-radius: 12px;
+    color: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 form {
-    width: 100%;
     display: flex;
-    flex-direction: column; /* Arrange all content in a single column */
-    align-items: center;
+    flex-direction: column;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #880e4f; /* Darker pink for labels */
+form label {
+    margin-bottom: 10px;
+    color: #333;
     font-weight: bold;
-    font-size: 14px;
-    text-align: left;
-    width: 100%;
 }
 
-input[type="text"], input[type="password"], input[type="number"], select {
-    width: 100%;
+form input[type="text"], form input[type="password"] {
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #f8bbd0; /* Light pink border */
-    border-radius: 6px; /* Slightly more rounded inputs */
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
     box-sizing: border-box;
-    font-size: 14px;
-    background-color: #fce4ec; /* Very light pink background */
+    font-size: 16px;
 }
 
-input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus, select:focus {
-    border-color: #d81b60; /* Bright pink focus border */
-    outline: none;
-    box-shadow: 0 0 6px rgba(216, 27, 96, 0.5); /* Pink glow on focus */
-}
-
-button {
-    width: 100%;
+form button {
     padding: 12px;
-    background-color: #ec407a; /* Pink button background */
+    background-color: #333;
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 15px;
 }
 
-button:hover {
-    background-color: #d81b60; /* Darker pink on hover */
+form button:hover {
+    background-color: #555;
 }
 
-/* Interests Grid Styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+
+a.create-profile-button, a.back-to-login-button {
+    color: #ec407a; /* Pink for links */
+    text-decoration: none;
+    margin-top: 15px;
+    z-index: 4; /* Ensure links are above other content */
+}
+
+a.create-profile-button:hover, a.back-to-login-button:hover {
+    text-decoration: underline;
+}
+
+/* Interest Grid Styling */
 .interests-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for interests */
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Space between checkboxes */
     margin-bottom: 20px;
-    width: 100%;
+    text-align: left;
+    z-index: 4; /* Ensure the interests grid is above the background hover */
 }
 
 .interest-item {
     display: flex;
     align-items: center;
+    z-index: 4; /* Ensure each interest item is above other content */
 }
 
 .interest-item input[type="checkbox"] {
     margin-right: 8px;
+    z-index: 4; /* Ensure the checkboxes are above other content */
 }
 
-a {
-    color: #ec407a; /* Pink for links */
-    text-decoration: none;
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
+/* Location Select Styling */
+.location-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 5; /* Ensure the location group is above other content */
 }
 
-a:hover {
-    text-decoration: underline;
+.location-item {
+    flex: 1;
+    padding: 0 5px;
+    z-index: 5; /* Ensure the location items are above other content */
+}
+
+.location-item select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #f8bbd0; /* Light pink border */
+    border-radius: 6px;
+    background-color: #fce4ec; /* Very light pink background */
+    box-sizing: border-box;
+    display: block; /* Ensure dropdown is visible */
+    z-index: 5; /* Ensure location dropdowns are above other content */
 }
