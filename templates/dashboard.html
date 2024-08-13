@@ -48,6 +48,26 @@
             text-align: center;
             font-size: 24px;
         }
+
+        /* Edit Profile Button Styling */
+        .edit-profile-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ec407a; /* Pink button background */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-profile-button:hover {
+            background-color: #d81b60; /* Darker pink on hover */
+        }
     </style>
 </head>
 <body>
@@ -60,9 +80,16 @@
             <li><span>Age:</span> {{ profile['Age'] }}</li>
             <li><span>Gender:</span> {{ profile['Gender'] }}</li>
             <li><span>Gender Preference:</span> {{ profile['Gender Preference'] }}</li>
-            <li><span>Location:</span> {{ profile['Location'] }}</li>
+            <li><span>Province:</span> {{ profile['Province'] }}</li>
+            <li><span>City:</span> {{ profile['City'] }}</li>
+            <li><span>Smoking:</span> {{ profile['Smoking'] }}</li>
+            <li><span>Drinking:</span> {{ profile['Drinking'] }}</li>
+            <li><span>Languages:</span> {{ ', '.join(profile['Languages']) }}</li>
             <li><span>Interests:</span> {{ ', '.join(profile['Interests']) }}</li>
         </ul>
+
+        <!-- Edit Profile Button -->
+        <a href="{{ url_for('edit_profile') }}" class="edit-profile-button">Edit Profile</a>
     </div>
 </body>
 </html>
