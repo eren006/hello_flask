@@ -56,8 +56,8 @@ def create():
         gender_preference = request.form['gender_preference']
         province = request.form['province']
         city = request.form['city']
-        smoking = request.form['smoking']
-        drinking = request.form['drinking']
+        smoking = request.form['smoking']== 'true' 
+        drinking = request.form['drinking']== 'true' 
         languages = request.form['languages']
         selected_interests = request.form.getlist('interests')
 
