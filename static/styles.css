@@ -223,3 +223,42 @@ a.create-profile-button:hover, a.back-to-login-button:hover {
     display: block; /* Ensure dropdown is visible */
     z-index: 5; /* Ensure location dropdowns are above other content */
 }
+
+/* General content styling */
+.create-container.content {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    padding: 20px 40px; /* Added padding for space inside the container */
+    margin: 20px auto; /* Center the container horizontally with auto margin */
+    border-radius: 12px; /* Rounded corners for a softer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-top: 5px solid #ec407a; /* Pink top border */
+    border-bottom: 5px solid #ec407a; /* Pink bottom border */
+    max-width: 600px; /* Set a maximum width for the container */
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #342a2d; /* 初始粉红色背景 */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-weight: bold;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(45deg, #ff9a9e, #fecfef); /* 渐变粉红色 */
+    color: white;
+    transition: background 0.5s ease;
+}
+
+button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(236, 64, 122, 0.5); /* 聚焦时的阴影效果 */
+}
+
+
+

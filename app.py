@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -89,6 +90,39 @@ def dashboard():
     else:
         flash('User not found.', 'danger')
         return redirect(url_for('login'))
+    
+@app.route('/edit_profile', methods=['GET', 'POST'])
+def edit_profile():
+    if 'user_id' not in session:
+        flash('Please log in to access your profile.', 'danger')
+        return redirect(url_for('login'))
+    
+    conn = get_db_connection()
+    user = conn.execute('SELECT * FROM user_profiles WHERE user_id = ?', (session['user_id'],)).fetchone()
+
+    if request.method == 'POST':
+        # Process the form data and update the user's profile in the database
+        new_name = request.form['name']
+        new_age = request.form['age']
+        new_gender = request.form['gender']
+        new_gender_preference = request.form['gender_preference']
+        new_province = request.form['province']
+        new_city = request.form['city']
+        new_smoking = request.form['smoking']
+        new_drinking = request.form['drinking']
+        new_languages = ','.join(request.form.getlist('languages'))
+        new_interests = ','.join(request.form.getlist('interests'))
+
+        conn.execute('''UPDATE user_profiles SET name = ?, age = ?, gender = ?, gender_preference = ?, province = ?, city = ?, smoking = ?, drinking = ?, languages = ?, interests = ? WHERE user_id = ?''',
+                     (new_name, new_age, new_gender, new_gender_preference, new_province, new_city, new_smoking, new_drinking, new_languages, new_interests, session['user_id']))
+        conn.commit()
+        conn.close()
+
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('dashboard'))
+
+    conn.close()
+    return render_template('edit_profile.html', profile=user)
 
 @app.route('/matching')
 def matching():
@@ -99,6 +133,9 @@ def matching():
     # Logic for matching would go here (e.g., fetching potential matches based on preferences)
     # For now, we just render a placeholder page
     return render_template('matching.html')
+
+    return render_template('dashboard.html', profile=profile)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
