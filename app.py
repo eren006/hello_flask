@@ -60,7 +60,8 @@ def create():
         interests_str = ','.join(selected_interests)
 
         conn = get_db_connection()
-        conn.execute('INSERT INTO user_profiles (user_id, password, name, age, gender, gender_preference, province, city, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        # Insert user records here (Different Format as to what's in the database, will discuss tomorrow)
+        conn.execute('INSERT INTO user_profiles (user_id, password, name, age, gender, gender_preference, location, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
                      (user_id, password, name, age, gender, gender_preference, province, city, interests_str))
         conn.commit()
         conn.close()
