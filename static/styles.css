@@ -21,10 +21,10 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.7); 
     z-index: 10;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Slight shadow for depth */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .header-bar {
@@ -40,7 +40,7 @@ header h1 {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
-    text-transform: uppercase; /* Uppercase for a more formal look */
+    text-transform: uppercase; 
 }
 
 header nav a {
@@ -58,7 +58,7 @@ header nav a:hover {
 }
 
 header nav a.create-profile-button {
-    background-color: #ec407a; /* Pink background for the Create Profile button */
+    background-color: #ec407a; 
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
@@ -67,7 +67,7 @@ header nav a.create-profile-button {
 }
 
 header nav a.create-profile-button:hover {
-    background-color: #d81b60; /* Darker pink on hover */
+    background-color: #d81b60; 
 }
 
 /* Hero Section */
@@ -79,7 +79,7 @@ header nav a.create-profile-button:hover {
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
-    color: #ec407a; /* Matching pink color for consistency */
+    color: #ec407a; 
     font-weight: bold;
 }
 
@@ -87,7 +87,7 @@ header nav a.create-profile-button:hover {
     font-size: 48px;
     line-height: 1.2;
     font-weight: 700;
-    text-transform: uppercase; /* Uppercase for a stronger statement */
+    text-transform: uppercase; 
 }
 
 .hero-section p {
@@ -101,10 +101,10 @@ header nav a.create-profile-button:hover {
     max-width: 600px;
     margin: 0 auto;
     padding: 40px 20px;
-    background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque background for clarity */
+    background-color: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     color: #333;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow for a more defined look */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); 
 }
 
 form {
@@ -116,7 +116,7 @@ form label {
     margin-bottom: 10px;
     color: #333;
     font-weight: bold;
-    text-transform: uppercase; /* Uppercase labels for a clean, modern look */
+    text-transform: uppercase; 
 }
 
 form input[type="text"], form input[type="password"] {

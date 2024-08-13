@@ -3,6 +3,7 @@ import sqlitecloud
 
 
 app = Flask(__name__)
+app.secret_key = 'flask'
 
 
 def get_db_connection():
@@ -26,7 +27,7 @@ def login():
         conn = get_db_connection()
         user = conn.execute('SELECT * FROM User WHERE UserID = ?', (username,)).fetchone()
         conn.close()
-        if user and user['name'] == password:
+        if user and user['password'] == password:
             session['user_id'] = user['user_id']  # Store user_id in session
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
@@ -55,13 +56,18 @@ def create():
         gender_preference = request.form['gender_preference']
         province = request.form['province']
         city = request.form['city']
+        smoking = request.form['smoking']
+        drinking = request.form['drinking']
+        languages = request.form['languages']
         selected_interests = request.form.getlist('interests')
 
         interests_str = ','.join(selected_interests)
 
         conn = get_db_connection()
-        conn.execute('INSERT INTO user_profiles (user_id, password, name, age, gender, gender_preference, province, city, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                     (user_id, password, name, age, gender, gender_preference, province, city, interests_str))
+        conn.execute('''INSERT INTO user_profiles 
+               (user_id, password, name, age, gender, gender_preference, province, city, smoking, drinking, languages, interests) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+               (user_id, password, name, age, gender, gender_preference, province, city, smoking, drinking, languages, interests_str))
         conn.commit()
         conn.close()
 
