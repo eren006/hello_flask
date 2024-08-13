@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotmantic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-bar">
+            <h1>Rotmantic</h1>
+            <nav>
+                <a href="{{ url_for('create') }}" class="create-profile-button">Create Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div>
+            <h2 class="highlight-text">Rotmantic: Your Journey to Love Starts Now</h2>
+            <p class="highlight-text">Experience connections that matter.</p>
+        </div>
+    </div>
+    
+
+    <!-- Scrollable Content (Login Form) -->
+    <div class="content">
+        <h2>Login to Rotmantic</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Footer Message -->
+    <footer>
+        At ROTMANTIC, LOVE IS HOW WE MANAGE
+    </footer>
+
+</body>
+</html>
