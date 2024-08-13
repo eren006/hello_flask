@@ -3,6 +3,7 @@ import sqlitecloud
 
 
 app = Flask(__name__)
+app.secret_key = 'flask'
 
 
 def get_db_connection():
@@ -55,14 +56,18 @@ def create():
         gender_preference = request.form['gender_preference']
         province = request.form['province']
         city = request.form['city']
+        smoking = request.form['smoking']
+        drinking = request.form['drinking']
+        languages = request.form['languages']
         selected_interests = request.form.getlist('interests')
 
         interests_str = ','.join(selected_interests)
 
         conn = get_db_connection()
-        # Insert user records here (Different Format as to what's in the database, will discuss tomorrow)
-        conn.execute('INSERT INTO user_profiles (user_id, password, name, age, gender, gender_preference, location, interests) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                     (user_id, password, name, age, gender, gender_preference, province, city, interests_str))
+        conn.execute('''INSERT INTO user_profiles 
+               (user_id, password, name, age, gender, gender_preference, province, city, smoking, drinking, languages, interests) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+               (user_id, password, name, age, gender, gender_preference, province, city, smoking, drinking, languages, interests_str))
         conn.commit()
         conn.close()
 
