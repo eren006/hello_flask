@@ -240,7 +240,18 @@ def matching():
     conn = get_db_connection()
     
     users = pd.read_sql('SELECT * FROM User', conn)
-    print("Users DataFrame Columns:", users.columns)  # This will print all column names
+    # Fetch list of other_user_ids that have already been interacted with
+    interacted_users_query = '''
+        SELECT UserB FROM Records
+        WHERE UserA = ? OR UserB = ?
+    '''
+    interacted_users = pd.read_sql(interacted_users_query, conn, params=[current_user_id, current_user_id])
+
+    # Convert the list of interacted user IDs to a set for easy lookup
+    interacted_user_ids = set(interacted_users['UserB'].tolist())
+
+    # Filter out users who have already been interacted with
+    users = users[~users['UserID'].isin(interacted_user_ids)]
     conn.close()
 
     sorted_matches = compute_score(current_user_id, users)

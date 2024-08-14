@@ -109,7 +109,7 @@
         <div class="profile-container">
             <div class="profile-item">
                 <span class="label">User ID:</span>
-                <span class="value">{{ match_profile['User ID'] }}</span>
+                <span class="value">{{ match_profile['UserID'] }}</span>
             </div>
             <div class="profile-item">
                 <span class="label">Name:</span>
@@ -125,7 +125,7 @@
             </div>
             <div class="profile-item">
                 <span class="label">Gender Preference:</span>
-                <span class="value">{{ match_profile['Gender Preference'] }}</span>
+                <span class="value">{{ match_profile['Gender_Preference'] }}</span>
             </div>
             <div class="profile-item">
                 <span class="label">Location:</span>
@@ -144,11 +144,11 @@
         <!-- Like/Dislike Buttons -->
         <div class="button-container">
             <form action="{{ url_for('like') }}" method="post">
-                <input type="hidden" name="liked_user_id" value="{{ match_profile['User ID'] }}">
+                <input type="hidden" name="liked_user_id" value="{{ match_profile['UserID'] }}">
                 <button type="submit">Like</button>
             </form>
             <form action="{{ url_for('dislike') }}" method="post">
-                <input type="hidden" name="liked_user_id" value="{{ match_profile['User ID'] }}">
+                <input type="hidden" name="liked_user_id" value="{{ match_profile['UserID'] }}">
                 <button type="submit">Dislike</button>
             </form>
         </div>
