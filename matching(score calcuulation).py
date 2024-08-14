@@ -57,8 +57,8 @@ def compute_score(current_user_id, users):
         age_score = custom_age_score(age_difference)
         
         # Like/Dislike Adjustments
-        like_adjustment = 0.05 * len(potential_match_obj.liked_users)
-        dislike_adjustment = -0.05 * len(potential_match_obj.disliked_users)
+        like_adjustment = 0.05 * len(potential_match.liked_users)
+        dislike_adjustment = -0.05 * len(potential_match.disliked_users)
         
         # Weighted Score
         if gender_score == 0:
