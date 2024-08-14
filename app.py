@@ -265,8 +265,8 @@ def like():
     liked_user_id = request.form['liked_user_id']
 
     conn = get_db_connection()
-    conn.execute('''INSERT INTO Records (UserA, UserB, Liked, Disliked, Match)
-                    VALUES (?, ?, 1, 0, 0)''', (user_id, liked_user_id))
+    conn.execute('''INSERT INTO Records (Match, Liked, Disliked,UserA, UserB)
+                    VALUES (0, 1, 0, ?, ?)''', (user_id, liked_user_id))
     conn.commit()
     conn.close()
 
@@ -279,7 +279,7 @@ def dislike():
 
     conn = get_db_connection()
     conn.execute('''INSERT INTO Records (Match, Liked, Disliked,UserA, UserB)
-                    VALUES (0, 1, 0, ?, ?)''', (user_id, disliked_user_id))
+                    VALUES (0, 0, 1, ?, ?)''', (user_id, disliked_user_id))
     conn.commit()
     conn.close()
 
