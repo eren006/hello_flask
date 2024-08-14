@@ -28,6 +28,7 @@
 
         .profile-container {
             text-align: left;
+            margin-bottom: 20px; /* Add some space below profile details */
         }
 
         .profile-item {
@@ -53,12 +54,33 @@
             font-size: 24px;
         }
 
-        /* Edit Profile Button Styling */
-        .edit-profile-button {
-            display: inline-block;
+        /* Like/Dislike Container */
+        .like-dislike-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background-color: #f0f0f0; /* Background color for visibility */
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .like-dislike-item {
+            text-align: center;
+            font-size: 24px; /* Make numbers larger */
+            color: #ad1457; /* Deep pink color */
+        }
+
+        /* Button Styling */
+        .button-container {
             margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container a {
+            display: inline-block;
             padding: 10px 20px;
-            background-color: #ec407a; /* Pink button background */
+            background-color: #ff4081;
             color: white;
             border: none;
             border-radius: 6px;
@@ -67,10 +89,43 @@
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease;
+            width: 30%;
+            text-align: center;
         }
 
-        .edit-profile-button:hover {
-            background-color: #d81b60; /* Darker pink on hover */
+        .button-container a:hover {
+            background-color: #d81b60;
+        }
+
+        /* Matches Container */
+        .matches-container {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .match-item {
+            display: inline-block;
+            width: 45%;
+            margin: 10px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-item h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .match-item p {
+            font-size: 14px;
+            color: #666;
         }
     </style>
 </head>
@@ -100,21 +155,9 @@
                 <span class="value">{{ profile['Gender Preference'] }}</span>
             </div>
             <div class="profile-item">
-                <span class="label">Province:</span>
-                <span class="value">{{ profile['Province'] }}</span>
-            </div>
-            <div class="profile-item">
                 <span class="label">City:</span>
-                <span class="value">{{ profile['City'] }}</span>
+                <span class="value">{{ profile['Location'] }}</span>
             </div>
-            <!-- <div class="profile-item">
-                <span class="label">Smoking:</span>
-                <span class="value">{{ profile['Smoking'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Drinking:</span>
-                <span class="value">{{ profile['Drinking'] }}</span>
-            </div> -->
             <div class="profile-item">
                 <span class="label">Languages:</span>
                 <span class="value">{{ ', '.join(profile['Languages']) }}</span>
@@ -125,9 +168,33 @@
             </div>
         </div>
 
-        <!-- Edit Profile Button -->
-        <a href="{{ url_for('edit_profile') }}" class="edit-profile-button">Edit Profile</a>
-        <a href="{{ url_for('login') }}" class="edit-profile-button">Logout</a>
+        <!-- Like/Dislike Section -->
+        <div class="like-dislike-container">
+            <div class="like-dislike-item">
+                {{ likes_count }} Likes
+            </div>
+            <div class="like-dislike-item">
+                {{ dislikes_count }} Dislikes
+            </div>
+        </div>
+
+        <!-- Matches Section -->
+        <div class="matches-container">
+            <h2>Your Matches</h2>
+            {% for match in matched_users %}
+            <div class="match-item">
+                <h3>{{ match['Name'] }}</h3>
+                <p>User ID: {{ match['UserID'] }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="button-container">
+            <a href="{{ url_for('matching') }}">Find Your Match</a>
+            <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+            <a href="{{ url_for('login') }}">Logout</a>
+        </div>
     </div>
 </body>
 </html>

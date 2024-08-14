@@ -5,13 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matching Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .match-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            margin: 40px auto;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #f8bbd0; /* Light pink border around photo */
+        }
+
+        .profile-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .profile-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #880e4f; /* Dark pink for labels */
+        }
+
+        .value {
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container form {
+            width: 45%;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button-container button:hover {
+            background-color: #d81b60;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            background-color: #757575;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .back-button button:hover {
+            background-color: #5f5f5f;
+        }
+    </style>
 </head>
 <body>
-    <h2>Potential Matches</h2>
-    <p>This is where the matching logic would be implemented.</p>
+    <div class="match-container">
+        {% if match_profile %}
+        <img src="{{ url_for('static', filename='profile_photo.jpg') }}" alt="Profile Photo" class="profile-photo">
+        <h2>{{ match_profile['Name'] }}</h2>
+        <div class="profile-container">
+            <div class="profile-item">
+                <span class="label">User ID:</span>
+                <span class="value">{{ match_profile['User ID'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Name:</span>
+                <span class="value">{{ match_profile['Name'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Age:</span>
+                <span class="value">{{ match_profile['Age'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Gender:</span>
+                <span class="value">{{ match_profile['Gender'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Gender Preference:</span>
+                <span class="value">{{ match_profile['Gender Preference'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Location:</span>
+                <span class="value">{{ match_profile['Location'] }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Languages:</span>
+                <span class="value">{{ ', '.join(match_profile['Languages']) }}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Interests:</span>
+                <span class="value">{{ ', '.join(match_profile['Interests']) }}</span>
+            </div>
+        </div>
 
-    <form action="{{ url_for('dashboard') }}">
-        <button type="submit">Back to Dashboard</button>
-    </form>
+        <!-- Like/Dislike Buttons -->
+        <div class="button-container">
+            <form action="{{ url_for('like') }}" method="post">
+                <input type="hidden" name="liked_user_id" value="{{ match_profile['User ID'] }}">
+                <button type="submit">Like</button>
+            </form>
+            <form action="{{ url_for('dislike') }}" method="post">
+                <input type="hidden" name="liked_user_id" value="{{ match_profile['User ID'] }}">
+                <button type="submit">Dislike</button>
+            </form>
+        </div>
+        {% else %}
+        <p>No matches available at this time. Please check back later.</p>
+        {% endif %}
+
+        <!-- Back to Dashboard Button -->
+        <div class="back-button">
+            <form action="{{ url_for('dashboard') }}">
+                <button type="submit">Back to Dashboard</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
