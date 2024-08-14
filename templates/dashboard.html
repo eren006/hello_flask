@@ -204,14 +204,14 @@
             <h2>Your Matches</h2>
             {% for user in matched_users %}
             <div class="match-item">
-                <h3>{{ user['Name'] }}</h3>
-                <p>{{ user['Location'] }}</p>
+                <h3>{{ user[1] }}</h3>
+                <p>{{ user[5] }}</p>
                 <div class="profile-details">
-                    <p><strong>Age:</strong> {{ user['Age'] }}</p>
-                    <p><strong>Gender:</strong> {{ user['Gender'] }}</p>
-                    <p><strong>Gender Preference:</strong> {{ user['Gender_Preference'] }}</p>
-                    <p><strong>Languages:</strong> {{ ', '.join(user['Languages']) }}</p>
-                    <p><strong>Interests:</strong> {{ ', '.join(user['Interests']) }}</p>
+                    <p><strong>Age:</strong> {{ user[2] }}</p>
+                    <p><strong>Gender:</strong> {{ user[3] }}</p>
+                    <p><strong>Gender Preference:</strong> {{ user[4] }}</p>
+                    <p><strong>Languages:</strong> {{(user[6]) }}</p>
+                    <p><strong>Interests:</strong> {{(user[7]) }}</p>
                 </div>
             </div>
             {% endfor %}
