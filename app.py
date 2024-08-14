@@ -240,12 +240,12 @@ def matching():
     conn = get_db_connection()
     
     users = pd.read_sql('SELECT * FROM User', conn)
-    # Fetch list of other_user_ids that have already been interacted with
+    # Fetch list of other_user_ids that have already been interacted with by the current user (UserA)
     interacted_users_query = '''
         SELECT UserB FROM Records
-        WHERE UserA = ? OR UserB = ?
+        WHERE UserA = ?
     '''
-    interacted_users = pd.read_sql(interacted_users_query, conn, params=[current_user_id, current_user_id])
+    interacted_users = pd.read_sql(interacted_users_query, conn, params=[current_user_id])
 
     # Convert the list of interacted user IDs to a set for easy lookup
     interacted_user_ids = set(interacted_users['UserB'].tolist())
