@@ -131,6 +131,24 @@
         .button-container a:hover {
             background-color: #d81b60;
         }
+        .delete-button {
+        background-color: #ff1744;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .delete-button:hover {
+        background-color: #d50000;
+    }
     </style>
 </head>
 <body>
@@ -205,6 +223,10 @@
             <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
             <a href="{{ url_for('login') }}">Logout</a>
         </div>
+        <form action="{{ url_for('delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+            <input type="hidden" name="userID" value="{{ profile['User ID'] }}">
+            <button type="submit" class="delete-button">Delete Account</button>
+        </form>
     </div>
 </body>
 </html>
