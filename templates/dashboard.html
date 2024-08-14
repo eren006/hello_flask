@@ -108,13 +108,13 @@
         }
 
         .match-item {
-            display: inline-block;
-            width: 45%;
-            margin: 10px;
+            display: block;
+            margin-bottom: 10px;
             padding: 15px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
         }
 
         .match-item h3 {
@@ -127,6 +127,60 @@
             font-size: 14px;
             color: #666;
         }
+
+        .match-item button {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .match-item button:hover {
+            background-color: #d81b60;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 12px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -178,13 +232,21 @@
             </div>
         </div>
 
-        <!-- Matches Section -->
         <div class="matches-container">
             <h2>Your Matches</h2>
-            {% for match in matched_users %}
-            <div class="match-item">
-                <h3>{{ match['Name'] }}</h3>
-                <p>User ID: {{ match['UserID'] }}</p>
+            {% for user in matched_users %}
+            <div class="match-item" 
+                 data-userid="{{ user['UserID'] }}" 
+                 data-name="{{ user['Name'] }}"
+                 data-age="{{ user['Age'] }}"
+                 data-gender="{{ user['Gender'] }}"
+                 data-gender-preference="{{ user['Gender_Preference'] }}"
+                 data-location="{{ user['Location'] }}"
+                 data-languages="{{ ', '.join(user['Languages']) }}"
+                 data-interests="{{ ', '.join(user['Interests']) }}">
+                <h3>{{ user['Name'] }}</h3>
+                <p>{{ user['Location'] }}</p>
+                <button type="button" onclick="showProfile(this)">View Profile</button>
             </div>
             {% endfor %}
         </div>
@@ -196,5 +258,89 @@
             <a href="{{ url_for('login') }}">Logout</a>
         </div>
     </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2 id="profile-username"></h2>
+          <div id="profile-info"></div>
+        </div>
+      </div>
+
+    <script>
+    function showProfile(element) {
+    // Get the modal
+    var modal = document.getElementById("profileModal");
+
+    // Get profile data from data attributes
+    var userId = element.parentElement.getAttribute("data-userid");
+    var name = element.parentElement.getAttribute("data-name");
+    var age = element.parentElement.getAttribute("data-age");
+    var gender = element.parentElement.getAttribute("data-gender");
+    var genderPreference = element.parentElement.getAttribute("data-gender-preference");
+    var location = element.parentElement.getAttribute("data-location");
+    var languages = element.parentElement.getAttribute("data-languages");
+    var interests = element.parentElement.getAttribute("data-interests");
+
+    // Populate the modal with profile information
+    document.getElementById("profile-username").textContent = name + "'s Profile";
+    document.getElementById("profile-info").innerHTML = `
+        <div class="profile-container">
+            <div class="profile-item">
+                <span class="label">User ID:</span>
+                <span class="value">${userId}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Name:</span>
+                <span class="value">${name}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Age:</span>
+                <span class="value">${age}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Gender:</span>
+                <span class="value">${gender}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Gender Preference:</span>
+                <span class="value">${genderPreference}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">City:</span>
+                <span class="value">${location}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Languages:</span>
+                <span class="value">${languages}</span>
+            </div>
+            <div class="profile-item">
+                <span class="label">Interests:</span>
+                <span class="value">${interests}</span>
+            </div>
+        </div>
+    `;
+
+    // Display the modal
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    // Get the modal
+    var modal = document.getElementById("profileModal");
+
+    // Hide the modal
+    modal.style.display = "none";
+}
+
+// Close the modal when the user clicks anywhere outside of the modal
+window.onclick = function(event) {
+    var modal = document.getElementById("profileModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+    </script>
 </body>
 </html>

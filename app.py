@@ -118,9 +118,10 @@ def dashboard():
                                          (session['user_id'],)).fetchall()
         
         # Fetch the list of matched users
-        matched_users = conn.execute('''SELECT UserID, Name FROM User
+        matched_users = conn.execute('''SELECT UserID, Name, Age, Gender, Gender_Preference, Location, Languages, Interests FROM User
                                         WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Match = 1)''',
                                         (session['user_id'],)).fetchall()
+        
 
         conn.close()
 
@@ -272,8 +273,28 @@ def like():
     liked_user_id = request.form['liked_user_id']
 
     conn = get_db_connection()
-    conn.execute('''INSERT INTO Records (Match, Liked, Disliked,UserA, UserB)
-                    VALUES (0, 1, 0, ?, ?)''', (user_id, liked_user_id))
+    cursor = conn.cursor()
+
+    # Check if there is a record (0, 1, 0, liked_user_id, user_id) in the Records table
+    cursor.execute('''SELECT * FROM Records WHERE Match = 0 AND Liked = 1 AND Disliked = 0 AND UserA = ? AND UserB = ?''', 
+                   (liked_user_id, user_id))
+    existing_record = cursor.fetchone()
+
+    if existing_record:
+        # If there is a matching record, insert with Match = 1
+        cursor.execute('''UPDATE Records 
+                          SET Match = 1
+                          WHERE Match = 0 AND Liked = 1 AND Disliked = 0 AND UserA = ? AND UserB = ?''', 
+                       (liked_user_id, user_id))
+        cursor.execute('''INSERT INTO Records (Match, Liked, Disliked, UserA, UserB)
+                          VALUES (1, 1, 0, ?, ?)''', 
+                       (user_id, liked_user_id))
+    else:
+        # Otherwise, insert with Match = 0
+        cursor.execute('''INSERT INTO Records (Match, Liked, Disliked, UserA, UserB)
+                          VALUES (0, 1, 0, ?, ?)''', 
+                       (user_id, liked_user_id))
+
     conn.commit()
     conn.close()
 
