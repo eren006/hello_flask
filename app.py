@@ -212,8 +212,8 @@ def compute_score(current_user_id, users):
         age_difference = abs(current_user['Age'] - potential_match['Age'])
         age_score = custom_age_score(age_difference)
         
-        like_adjustment = 0
-        dislike_adjustment = 0
+        like_adjustment = 0.05 * len(potential_match.liked_users)
+        dislike_adjustment = -0.05 * len(potential_match.disliked_users)
 
         if gender_score == 0:
             total_score = 0
