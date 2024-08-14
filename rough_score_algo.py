@@ -39,7 +39,7 @@ drinking_score = 1 if current_user['drinking_preference'] == potential_match['dr
        union = len(set(current_user['interests']) | set(potential_match['interests']))
        interest_score = intersection / union
       #language preference
-language_intersection = len(set(current_user['language']) & set(potential_match['language']))
+       language_intersection = len(set(current_user['language']) & set(potential_match['language']))
        language_union = len(set(current_user['language']) | set(potential_match['language']))
        language_score = language_intersection / language_union
 
