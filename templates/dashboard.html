@@ -1,290 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
     <style>
-        .dashboard-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            margin: 0 auto;
-        }
+      .dashboard-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        margin: 0 auto;
+      }
 
-        .profile-photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 4px solid #f8bbd0; /* Light pink border around photo */
-        }
+      .profile-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border: 4px solid #f8bbd0; /* Light pink border around photo */
+      }
 
-        .profile-container {
-            text-align: left;
-            margin-bottom: 20px; /* Add some space below profile details */
-        }
+      .profile-container {
+        text-align: left;
+        margin-bottom: 20px; /* Add some space below profile details */
+      }
 
-        .profile-item {
-            margin-bottom: 10px;
-            font-size: 16px;
-            display: flex;
-            justify-content: space-between;
-        }
+      .profile-item {
+        margin-bottom: 10px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .label {
-            font-weight: bold;
-            color: #880e4f; /* Dark pink for labels */
-        }
+      .label {
+        font-weight: bold;
+        color: #880e4f; /* Dark pink for labels */
+      }
 
-        .value {
-            color: #333;
-        }
+      .value {
+        color: #333;
+      }
 
-        h2 {
-            color: #ad1457; /* Deep pink color */
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 24px;
-        }
+      h2 {
+        color: #ad1457; /* Deep pink color */
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 24px;
+      }
 
-        /* Like/Dislike Container */
-        .like-dislike-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            background-color: #f0f0f0; /* Background color for visibility */
-            padding: 10px;
-            border-radius: 6px;
-        }
+      /* Like/Dislike Container */
+      .like-dislike-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        background-color: #f0f0f0; /* Background color for visibility */
+        padding: 10px;
+        border-radius: 6px;
+      }
 
-        .like-dislike-item {
-            text-align: center;
-            font-size: 24px; /* Make numbers larger */
-            color: #ad1457; /* Deep pink color */
-        }
+      .like-dislike-item {
+        text-align: center;
+        font-size: 24px; /* Make numbers larger */
+        color: #ad1457; /* Deep pink color */
+      }
 
-        /* Button Styling */
-        .button-container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
+      /* Button Styling */
+      .button-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .button-container a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            width: 30%;
-            text-align: center;
-        }
+      .button-container a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        width: 30%;
+        text-align: center;
+      }
 
-        .button-container a:hover {
-            background-color: #d81b60;
-        }
+      .button-container a:hover {
+        background-color: #d81b60;
+      }
 
-        /* Matches Container */
-        .matches-container {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+      /* Matches Container */
+      .matches-container {
+        margin-top: 40px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
 
-        .match-item {
-            display: block;
-            margin-bottom: 10px;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            text-align: left;
-        }
+      .match-item {
+        display: block;
+        margin-bottom: 10px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        text-align: left;
+      }
 
-        .match-item h3 {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-        }
+      .match-item h3 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+      }
 
-        .match-item p {
-            font-size: 14px;
-            color: #666;
-        }
+      .match-item p {
+        font-size: 14px;
+        color: #666;
+      }
 
-        .match-item button {
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
+      .match-item button {
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+      }
 
-        .match-item button:hover {
-            background-color: #d81b60;
-        }
+      .match-item button:hover {
+        background-color: #d81b60;
+      }
 
-        /* Modal Styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
+      /* Modal Styles */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+      }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 12px;
-        }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        border-radius: 12px;
+      }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="dashboard-container">
-        <img src="{{ url_for('static', filename='profile_photo.jpg') }}" alt="Profile Photo" class="profile-photo">
-        <h2>{{ profile['Name'] }}'s Dashboard</h2>
-        <div class="profile-container">
-            <div class="profile-item">
-                <span class="label">User ID:</span>
-                <span class="value">{{ profile['User ID'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Name:</span>
-                <span class="value">{{ profile['Name'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Age:</span>
-                <span class="value">{{ profile['Age'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Gender:</span>
-                <span class="value">{{ profile['Gender'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Gender Preference:</span>
-                <span class="value">{{ profile['Gender_Preference'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">City:</span>
-                <span class="value">{{ profile['Location'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Languages:</span>
-                <span class="value">{{ ', '.join(profile['Languages']) }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Interests:</span>
-                <span class="value">{{ ', '.join(profile['Interests']) }}</span>
-            </div>
+      <img
+        src="{{ url_for('static', filename='profile_photo.jpg') }}"
+        alt="Profile Photo"
+        class="profile-photo"
+      />
+      <h2>{{ profile['Name'] }}'s Dashboard</h2>
+      <div class="profile-container">
+        <div class="profile-item">
+          <span class="label">User ID:</span>
+          <span class="value">{{ profile['User ID'] }}</span>
         </div>
-
-        <!-- Like/Dislike Section -->
-        <div class="like-dislike-container">
-            <div class="like-dislike-item">
-                {{ likes_count }} Likes
-            </div>
-            <div class="like-dislike-item">
-                {{ dislikes_count }} Dislikes
-            </div>
+        <div class="profile-item">
+          <span class="label">Name:</span>
+          <span class="value">{{ profile['Name'] }}</span>
         </div>
-
-        <div class="matches-container">
-            <h2>Your Matches</h2>
-            {% for user in matched_users %}
-            <div class="match-item" 
-                 data-userid="{{ user['UserID'] }}" 
-                 data-name="{{ user['Name'] }}"
-                 data-age="{{ user['Age'] }}"
-                 data-gender="{{ user['Gender'] }}"
-                 data-gender-preference="{{ user['Gender_Preference'] }}"
-                 data-location="{{ user['Location'] }}"
-                 data-languages="{{ ', '.join(user['Languages']) }}"
-                 data-interests="{{ ', '.join(user['Interests']) }}">
-                <h3>{{ user['Name'] }}</h3>
-                <p>{{ user['Location'] }}</p>
-                <button type="button" onclick="showProfile(this)">View Profile</button>
-            </div>
-            {% endfor %}
+        <div class="profile-item">
+          <span class="label">Age:</span>
+          <span class="value">{{ profile['Age'] }}</span>
         </div>
-
-        <!-- Buttons Section -->
-        <div class="button-container">
-            <a href="{{ url_for('matching') }}">Find Your Match</a>
-            <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
-            <a href="{{ url_for('login') }}">Logout</a>
+        <div class="profile-item">
+          <span class="label">Gender:</span>
+          <span class="value">{{ profile['Gender'] }}</span>
         </div>
-    </div>
-
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-          <h2 id="profile-username"></h2>
-          <div id="profile-info"></div>
+        <div class="profile-item">
+          <span class="label">Gender Preference:</span>
+          <span class="value">{{ profile['Gender_Preference'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">City:</span>
+          <span class="value">{{ profile['Location'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Languages:</span>
+          <span class="value">{{ ', '.join(profile['Languages']) }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Interests:</span>
+          <span class="value">{{ ', '.join(profile['Interests']) }}</span>
         </div>
       </div>
 
+      <!-- Like/Dislike Section -->
+      <div class="like-dislike-container">
+        <div class="like-dislike-item">{{ likes_count }} Likes</div>
+      </div>
+
+      <div class="matches-container">
+        <h2>Your Matches</h2>
+        {% for user in matched_users %}
+        <div
+          class="match-item"
+          data-userid="{{ user['UserID'] }}"
+          data-name="{{ user['Name'] }}"
+          data-age="{{ user['Age'] }}"
+          data-gender="{{ user['Gender'] }}"
+          data-gender-preference="{{ user['Gender_Preference'] }}"
+          data-location="{{ user['Location'] }}"
+          data-languages="{{ ', '.join(user['Languages']) }}"
+          data-interests="{{ ', '.join(user['Interests']) }}"
+        >
+          <h3>{{ user['Name'] }}</h3>
+          <p>{{ user['Location'] }}</p>
+          <button type="button" onclick="showProfile(this)">
+            View Profile
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Buttons Section -->
+      <div class="button-container">
+        <a href="{{ url_for('matching') }}">Find Your Match</a>
+        <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+        <a href="{{ url_for('login') }}">Logout</a>
+      </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="profile-username"></h2>
+        <div id="profile-info"></div>
+      </div>
+    </div>
+
     <script>
-    function showProfile(element) {
-    // Get the modal
-    var modal = document.getElementById("profileModal");
+      function showProfile(element) {
+        // Get the modal
+        var modal = document.getElementById('profileModal');
 
-    // Get profile data from data attributes
-    var userId = element.parentElement.getAttribute("data-userid");
-    var name = element.parentElement.getAttribute("data-name");
-    var age = element.parentElement.getAttribute("data-age");
-    var gender = element.parentElement.getAttribute("data-gender");
-    var genderPreference = element.parentElement.getAttribute("data-gender-preference");
-    var location = element.parentElement.getAttribute("data-location");
-    var languages = element.parentElement.getAttribute("data-languages");
-    var interests = element.parentElement.getAttribute("data-interests");
+        // Get profile data from data attributes
+        var userId = element.parentElement.getAttribute('data-userid');
+        var name = element.parentElement.getAttribute('data-name');
+        var age = element.parentElement.getAttribute('data-age');
+        var gender = element.parentElement.getAttribute('data-gender');
+        var genderPreference = element.parentElement.getAttribute(
+          'data-gender-preference'
+        );
+        var location = element.parentElement.getAttribute('data-location');
+        var languages = element.parentElement.getAttribute('data-languages');
+        var interests = element.parentElement.getAttribute('data-interests');
 
-    // Populate the modal with profile information
-    document.getElementById("profile-username").textContent = name + "'s Profile";
-    document.getElementById("profile-info").innerHTML = `
+        // Populate the modal with profile information
+        document.getElementById('profile-username').textContent =
+          name + "'s Profile";
+        document.getElementById('profile-info').innerHTML = `
         <div class="profile-container">
             <div class="profile-item">
                 <span class="label">User ID:</span>
@@ -321,26 +329,25 @@
         </div>
     `;
 
-    // Display the modal
-    modal.style.display = "block";
-}
+        // Display the modal
+        modal.style.display = 'block';
+      }
 
-function closeModal() {
-    // Get the modal
-    var modal = document.getElementById("profileModal");
+      function closeModal() {
+        // Get the modal
+        var modal = document.getElementById('profileModal');
 
-    // Hide the modal
-    modal.style.display = "none";
-}
+        // Hide the modal
+        modal.style.display = 'none';
+      }
 
-// Close the modal when the user clicks anywhere outside of the modal
-window.onclick = function(event) {
-    var modal = document.getElementById("profileModal");
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
+      // Close the modal when the user clicks anywhere outside of the modal
+      window.onclick = function (event) {
+        var modal = document.getElementById('profileModal');
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      };
     </script>
-</body>
+  </body>
 </html>
