@@ -128,7 +128,6 @@ def dashboard():
         # Count the number of likes, dislikes, and matches
         likes_count = len(liked_users)
         dislikes_count = len(disliked_users)
-        matches_count = len(matched_users)
 
         return render_template('dashboard.html', profile=profile, likes_count=likes_count, dislikes_count=dislikes_count, matched_users=matched_users)
     else:
