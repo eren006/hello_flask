@@ -312,5 +312,13 @@ def dislike():
 
     return redirect(url_for('matching'))
 
+
+def delete(userID):
+    conn = get_db_connection()
+    conn.execute(''' DELETE FROM records WHERE userA = ? OR userB = ? ''',(userID,userID))
+    conn.execute(''' DELETE FROM User WHERE UserID = ? ''',(userID))
+    conn.commit()
+    conn.close()
+
 if __name__ == '__main__':
     app.run(debug=True)
