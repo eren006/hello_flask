@@ -101,7 +101,7 @@ def dashboard():
             "Name": user[3],
             "Age": user[0],
             "Gender": user[1],
-            "Gender Preference": user[7],
+            "Gender_Preference": user[7],
             "Location": user[2],
             "Languages": user[8].split(','),
             "Interests": user[5].split(',')
@@ -190,24 +190,26 @@ def custom_age_score(age_difference):
         return max(0, 1 - (age_difference - 3) / (max_age_diff - 3))
 
 def compute_score(current_user_id, users):
+    # Convert the 'Age' column to integers
+    users['Age'] = users['Age'].astype(int)
     current_user = users[users['UserID'] == current_user_id].iloc[0]
 
     scores = []
     for _, potential_match in users[users['UserID'] != current_user_id].iterrows():
-        gender_score = 1 if current_user['GenderPreference'] == potential_match['gender'] else 0
-        smoking_score = 1 if current_user['smoking_preference'] == potential_match['smoking_preference'] else -1
-        drinking_score = 1 if current_user['drinking_preference'] == potential_match['drinking_preference'] else -1
-        location_score = 1 if current_user['City'] == potential_match['City'] else 0
+        gender_score = 1 if current_user['Gender_Preference'] == potential_match['Gender'] else 0
+        # smoking_score = 1 if current_user['smoking_preference'] == potential_match['smoking_preference'] else -1
+        # drinking_score = 1 if current_user['drinking_preference'] == potential_match['drinking_preference'] else -1
+        location_score = 1 if current_user['Location'] == potential_match['Location'] else 0
 
-        intersection = len(set(current_user['interests']) & set(potential_match['interests']))
-        union = len(set(current_user['interests']) | set(potential_match['interests']))
+        intersection = len(set(current_user['Interests']) & set(potential_match['Interests']))
+        union = len(set(current_user['Interests']) | set(potential_match['Interests']))
         interest_score = intersection / union if union != 0 else 0
 
-        language_intersection = len(set(current_user['language']) & set(potential_match['language']))
-        language_union = len(set(current_user['language']) | set(potential_match['language']))
+        language_intersection = len(set(current_user['Languages']) & set(potential_match['Languages']))
+        language_union = len(set(current_user['Languages']) | set(potential_match['Languages']))
         language_score = language_intersection / language_union if language_union != 0 else 0
 
-        age_difference = abs(current_user['age'] - potential_match['age'])
+        age_difference = abs(current_user['Age'] - potential_match['Age'])
         age_score = custom_age_score(age_difference)
         
         like_adjustment = 0
@@ -218,10 +220,10 @@ def compute_score(current_user_id, users):
         else:
             total_score = float(round(0.4 * interest_score + 0.2 * age_score + 
                                       0.1 * location_score + 0.1 * language_score + 
-                                      0.1 * smoking_score + 0.1 * drinking_score +
-                                      like_adjustment + dislike_adjustment, 2))
+                                      #0.1 * smoking_score + 0.1 * drinking_score +
+                                      + like_adjustment + dislike_adjustment, 2))
 
-        scores.append((potential_match['user_id'], total_score))
+        scores.append((potential_match['UserID'], total_score))
 
     sorted_scores = sorted(scores, key=lambda x: x[1], reverse=True)
     return sorted_scores
@@ -246,9 +248,9 @@ def matching():
 
     if sorted_matches:
         top_match_id = sorted_matches[0][0]
-        match_profile = users[users['user_i'] == top_match_id].iloc[0].to_dict()
-        match_profile['Languages'] = match_profile['language'].split(',')
-        match_profile['Interests'] = match_profile['interests'].split(',')
+        match_profile = users[users['UserID'] == top_match_id].iloc[0].to_dict()
+        match_profile['Languages'] = match_profile['Languages'].split(',')
+        match_profile['Interests'] = match_profile['Interests'].split(',')
         print("Match Profile:", match_profile)
     else:
         match_profile = None
@@ -276,8 +278,8 @@ def dislike():
     disliked_user_id = request.form['liked_user_id']
 
     conn = get_db_connection()
-    conn.execute('''INSERT INTO Records (UserA, UserB, Liked, Disliked, Match)
-                    VALUES (?, ?, 0, 1, 0)''', (user_id, disliked_user_id))
+    conn.execute('''INSERT INTO Records (Match, Liked, Disliked,UserA, UserB)
+                    VALUES (0, 1, 0, ?, ?)''', (user_id, disliked_user_id))
     conn.commit()
     conn.close()
 
