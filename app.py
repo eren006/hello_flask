@@ -109,9 +109,13 @@ def dashboard():
 
         # Fetch the list of liked users
         liked_users = conn.execute('''SELECT UserID, Name FROM User
-                                      WHERE UserID IN (SELECT UserA FROM Records WHERE UserB = ? AND Liked = 1)''',
+                                      WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Liked = 1)''',
                                       (session['user_id'],)).fetchall()
 
+        # Fetch the list of disliked users
+        disliked_users = conn.execute('''SELECT UserID, Name FROM User
+                                         WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Disliked = 1)''',
+                                         (session['user_id'],)).fetchall()
         
         # Fetch the list of matched users
         matched_users = conn.execute('''SELECT UserID, Name, Age, Gender, Gender_Preference, Location, Languages, Interests FROM User
@@ -123,8 +127,9 @@ def dashboard():
 
         # Count the number of likes, dislikes, and matches
         likes_count = len(liked_users)
+        dislikes_count = len(disliked_users)
 
-        return render_template('dashboard.html', profile=profile, likes_count=likes_count, matched_users=matched_users)
+        return render_template('dashboard.html', profile=profile, likes_count=likes_count, dislikes_count=dislikes_count, matched_users=matched_users)
     else:
         conn.close()
         flash('User not found.', 'danger')
