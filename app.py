@@ -189,7 +189,7 @@ def custom_age_score(age_difference):
         max_age_diff = 10
         return max(0, 1 - (age_difference - 3) / (max_age_diff - 3))
 
-def compute_score(current_user_id, users):
+def compute_score(current_user_id, users,liked_users,disliked_users):
     # Convert the 'Age' column to integers
     users['Age'] = users['Age'].astype(int)
     current_user = users[users['UserID'] == current_user_id].iloc[0]
@@ -212,8 +212,8 @@ def compute_score(current_user_id, users):
         age_difference = abs(current_user['Age'] - potential_match['Age'])
         age_score = custom_age_score(age_difference)
         
-        like_adjustment = 0.05 * len(potential_match.liked_users)
-        dislike_adjustment = -0.05 * len(potential_match.disliked_users)
+        like_adjustment = 0.05 * len(liked_users)
+        dislike_adjustment = -0.05 * len(disliked_users)
 
         if gender_score == 0:
             total_score = 0
@@ -250,7 +250,18 @@ def matching():
     users = users[~users['UserID'].isin(interacted_user_ids)]
     conn.close()
 
-    sorted_matches = compute_score(current_user_id, users)
+    conn = get_db_connection()
+    liked_users = conn.execute('''SELECT UserID, Name FROM User
+                                      WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Liked = 1)''',
+                                      (current_user_id,)).fetchall()
+
+        # Fetch the list of disliked users
+    disliked_users = conn.execute('''SELECT UserID, Name FROM User
+                                         WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Disliked = 1)''',
+                                         (current_user_id,)).fetchall()
+    conn.close()
+
+    sorted_matches = compute_score(current_user_id, users,liked_users, disliked_users)
     print("Sorted Matches:", sorted_matches)
 
     if sorted_matches:
