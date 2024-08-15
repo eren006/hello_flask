@@ -1,137 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
     <style>
-        .dashboard-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            margin: 0 auto;
-        }
+      .dashboard-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        margin: 0 auto;
+      }
 
-        .profile-photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 4px solid #f8bbd0; /* Light pink border around photo */
-        }
+      .profile-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border: 4px solid #f8bbd0; /* Light pink border around photo */
+      }
 
-        .profile-container {
-            text-align: left;
-            margin-bottom: 20px; /* Add some space below profile details */
-        }
+      .profile-container {
+        text-align: left;
+        margin-bottom: 20px; /* Add some space below profile details */
+      }
 
-        .profile-item {
-            margin-bottom: 10px;
-            font-size: 16px;
-            display: flex;
-            justify-content: space-between;
-        }
+      .profile-item {
+        margin-bottom: 10px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .label {
-            font-weight: bold;
-            color: #880e4f; /* Dark pink for labels */
-        }
+      .label {
+        font-weight: bold;
+        color: #880e4f; /* Dark pink for labels */
+      }
 
-        .value {
-            color: #333;
-        }
+      .value {
+        color: #333;
+      }
 
-        h2 {
-            color: #ad1457; /* Deep pink color */
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 24px;
-        }
+      h2 {
+        color: #ad1457; /* Deep pink color */
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 24px;
+      }
 
-        /* Like/Dislike Container */
-        .like-dislike-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            background-color: #f0f0f0; /* Background color for visibility */
-            padding: 10px;
-            border-radius: 6px;
-        }
+      /* Like/Dislike Container */
+      .like-dislike-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        background-color: #f0f0f0; /* Background color for visibility */
+        padding: 10px;
+        border-radius: 6px;
+      }
 
-        .like-dislike-item {
-            text-align: center;
-            font-size: 24px; /* Make numbers larger */
-            color: #ad1457; /* Deep pink color */
-        }
+      .like-dislike-item {
+        text-align: center;
+        font-size: 24px; /* Make numbers larger */
+        color: #ad1457; /* Deep pink color */
+      }
 
-        .matches-container {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: left; /* Align text to the left */
-        }
+      .matches-container {
+        margin-top: 40px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: left; /* Align text to the left */
+      }
 
-        .match-item {
-            margin-bottom: 20px; /* Increase margin for better spacing */
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
+      .match-item {
+        margin-bottom: 20px; /* Increase margin for better spacing */
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
 
-        .match-item h3 {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-        }
+      .match-item h3 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+      }
 
-        .match-item p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px; /* Add margin to ensure separation from other content */
-        }
+      .match-item p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px; /* Add margin to ensure separation from other content */
+      }
 
-        .profile-details {
-            font-size: 14px;
-            color: #333;
-            line-height: 1.6;
-        }
+      .profile-details {
+        font-size: 14px;
+        color: #333;
+        line-height: 1.6;
+      }
 
-        /* Button Styling */
-        .button-container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
+      /* Button Styling */
+      .button-container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .button-container a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            width: 30%;
-            text-align: center;
-        }
+      .button-container a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        width: 30%;
+        text-align: center;
+      }
 
-        .button-container a:hover {
-            background-color: #d81b60;
-        }
-        .delete-button {
+      .button-container a:hover {
+        background-color: #d81b60;
+      }
+      .delete-button {
         background-color: #ff1744;
         color: white;
         border: none;
@@ -144,89 +147,92 @@
         transition: background-color 0.3s ease;
         width: 100%;
         margin-top: 10px;
-    }
+      }
 
-    .delete-button:hover {
+      .delete-button:hover {
         background-color: #d50000;
-    }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="dashboard-container">
-        <img src="{{ url_for('static', filename='profile_photo.jpg') }}" alt="Profile Photo" class="profile-photo">
-        <h2>{{ profile['Name'] }}'s Dashboard</h2>
-        <div class="profile-container">
-            <div class="profile-item">
-                <span class="label">User ID:</span>
-                <span class="value">{{ profile['User ID'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Name:</span>
-                <span class="value">{{ profile['Name'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Age:</span>
-                <span class="value">{{ profile['Age'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Gender:</span>
-                <span class="value">{{ profile['Gender'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Gender Preference:</span>
-                <span class="value">{{ profile['Gender_Preference'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">City:</span>
-                <span class="value">{{ profile['Location'] }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Languages:</span>
-                <span class="value">{{ ', '.join(profile['Languages']) }}</span>
-            </div>
-            <div class="profile-item">
-                <span class="label">Interests:</span>
-                <span class="value">{{ ', '.join(profile['Interests']) }}</span>
-            </div>
+      <img
+        src="{{ url_for('static', filename='profile_photo.jpg') }}"
+        alt="Profile Photo"
+        class="profile-photo"
+      />
+      <h2>{{ profile['Name'] }}'s Dashboard</h2>
+      <div class="profile-container">
+        <div class="profile-item">
+          <span class="label">User ID:</span>
+          <span class="value">{{ profile['User ID'] }}</span>
         </div>
+        <div class="profile-item">
+          <span class="label">Name:</span>
+          <span class="value">{{ profile['Name'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Age:</span>
+          <span class="value">{{ profile['Age'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Gender:</span>
+          <span class="value">{{ profile['Gender'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Gender Preference:</span>
+          <span class="value">{{ profile['Gender_Preference'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">City:</span>
+          <span class="value">{{ profile['Location'] }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Languages:</span>
+          <span class="value">{{ ', '.join(profile['Languages']) }}</span>
+        </div>
+        <div class="profile-item">
+          <span class="label">Interests:</span>
+          <span class="value">{{ ', '.join(profile['Interests']) }}</span>
+        </div>
+      </div>
 
-        <!-- Like/Dislike Section -->
-        <div class="like-dislike-container">
-            <div class="like-dislike-item">
-                {{ likes_count }} Likes
-            </div>
-            <div class="like-dislike-item">
-                {{ dislikes_count }} Dislikes
-            </div>
-        </div>
+      <!-- Like/Dislike Section -->
+      <div class="like-dislike-container">
+        <div class="like-dislike-item">{{ likes_count }} Likes</div>
+      </div>
 
-        <div class="matches-container">
-            <h2>Your Matches</h2>
-            {% for user in matched_users %}
-            <div class="match-item">
-                <h3>{{ user[1] }}</h3>
-                <p>{{ user[5] }}</p>
-                <div class="profile-details">
-                    <p><strong>Age:</strong> {{ user[2] }}</p>
-                    <p><strong>Gender:</strong> {{ user[3] }}</p>
-                    <p><strong>Gender Preference:</strong> {{ user[4] }}</p>
-                    <p><strong>Languages:</strong> {{(user[6]) }}</p>
-                    <p><strong>Interests:</strong> {{(user[7]) }}</p>
-                </div>
-            </div>
-            {% endfor %}
+      <div class="matches-container">
+        <h2>Your Matches</h2>
+        {% for user in matched_users %}
+        <div class="match-item">
+          <h3>{{ user[1] }}</h3>
+          <p>{{ user[5] }}</p>
+          <div class="profile-details">
+            <p><strong>Age:</strong> {{ user[2] }}</p>
+            <p><strong>Gender:</strong> {{ user[3] }}</p>
+            <p><strong>Gender Preference:</strong> {{ user[4] }}</p>
+            <p><strong>Languages:</strong> {{(user[6]) }}</p>
+            <p><strong>Interests:</strong> {{(user[7]) }}</p>
+          </div>
         </div>
+        {% endfor %}
+      </div>
 
-        <!-- Buttons Section -->
-        <div class="button-container">
-            <a href="{{ url_for('matching') }}">Find Your Match</a>
-            <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
-            <a href="{{ url_for('login') }}">Logout</a>
-        </div>
-        <form action="{{ url_for('delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
-            <input type="hidden" name="userID" value="{{ profile['User ID'] }}">
-            <button type="submit" class="delete-button">Delete Account</button>
-        </form>
+      <!-- Buttons Section -->
+      <div class="button-container">
+        <a href="{{ url_for('matching') }}">Find Your Match</a>
+        <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+        <a href="{{ url_for('login') }}">Logout</a>
+      </div>
+      <form
+        action="{{ url_for('delete') }}"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
+      >
+        <input type="hidden" name="userID" value="{{ profile['User ID'] }}" />
+        <button type="submit" class="delete-button">Delete Account</button>
+      </form>
     </div>
-</body>
+  </body>
 </html>
