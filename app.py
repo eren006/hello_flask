@@ -188,38 +188,26 @@ def compute_score(current_user_id, users,liked_users,disliked_users):
     users['Age'] = users['Age'].astype(int)
     current_user = users[users['UserID'] == current_user_id].iloc[0]
 
-    scores = []
-    for _, potential_match in users[users['UserID'] != current_user_id].iterrows():
-        gender_score = 1 if current_user['Gender_Preference'] == potential_match['Gender'] else 0
-        # smoking_score = 1 if current_user['smoking_preference'] == potential_match['smoking_preference'] else -1
-        # drinking_score = 1 if current_user['drinking_preference'] == potential_match['drinking_preference'] else -1
-        location_score = 1 if current_user['Location'] == potential_match['Location'] else 0
-
-        intersection = len(set(current_user['Interests']) & set(potential_match['Interests']))
-        union = len(set(current_user['Interests']) | set(potential_match['Interests']))
-        interest_score = intersection / union if union != 0 else 0
-
-        language_intersection = len(set(current_user['Languages']) & set(potential_match['Languages']))
-        language_union = len(set(current_user['Languages']) | set(potential_match['Languages']))
-        language_score = language_intersection / language_union if language_union != 0 else 0
-
-        age_difference = abs(current_user['Age'] - potential_match['Age'])
-        age_score = custom_age_score(age_difference)
-        
-        like_adjustment = 0.05 * len(liked_users)
-        dislike_adjustment = -0.05 * len(disliked_users)
-
-        if gender_score == 0:
-            total_score = 0
-        else:
-            total_score = float(round(0.4 * interest_score + 0.2 * age_score + 
-                                      0.1 * location_score + 0.1 * language_score + 
-                                      #0.1 * smoking_score + 0.1 * drinking_score +
-                                      + like_adjustment + dislike_adjustment, 2))
-
-        scores.append((potential_match['UserID'], total_score))
-
+    potential_matches = users[users['UserID'] != current_user_id]
+    gender_scores = np.where(current_user['Gender_Preference'] == potential_matches['Gender'], 1, 0)
+    location_scores = np.where(current_user['Location'] == potential_matches['Location'], 1, 0)
+    interest_intersection = potential_matches['Interests'].apply(lambda x: len(set(current_user['Interests']) & set(x)))
+    interest_union = potential_matches['Interests'].apply(lambda x: len(set(current_user['Interests']) | set(x)))
+    interest_scores = np.where(interest_union != 0, interest_intersection / interest_union, 0)
+    language_intersection = potential_matches['Languages'].apply(lambda x: len(set(current_user['Languages']) & set(x)))
+    language_union = potential_matches['Languages'].apply(lambda x: len(set(current_user['Languages']) | set(x)))
+    language_scores = np.where(language_union != 0, language_intersection / language_union, 0)
+    age_differences = np.abs(potential_matches['Age'] - current_user['Age'])
+    age_scores = custom_age_score(age_differences)
+    like_adjustment = 0.05 * len(liked_users)
+    dislike_adjustment = -0.05 * len(disliked_users)
+    total_scores = np.where(gender_scores == 0, 0, 
+                            0.4 * interest_scores + 0.2 * age_scores + 
+                            0.1 * location_scores + 0.1 * language_scores + 
+                            like_adjustment + dislike_adjustment)
+    scores = list(zip(potential_matches['UserID'], np.round(total_scores, 2)))
     sorted_scores = sorted(scores, key=lambda x: x[1], reverse=True)
+
     return sorted_scores
 
 @app.route('/matching', methods=['GET'])
