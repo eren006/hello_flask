@@ -189,14 +189,16 @@ def compute_score(current_user_id, users,liked_users,disliked_users):
     current_user = users[users['UserID'] == current_user_id].iloc[0]
 
     potential_matches = users[users['UserID'] != current_user_id]
-    gender_scores = np.where(current_user['Gender_Preference'] == potential_matches['Gender'], 1, 0)
-    location_scores = np.where(current_user['Location'] == potential_matches['Location'], 1, 0)
-    interest_intersection = potential_matches['Interests'].apply(lambda x: len(set(current_user['Interests']) & set(x)))
-    interest_union = potential_matches['Interests'].apply(lambda x: len(set(current_user['Interests']) | set(x)))
-    interest_scores = np.where(interest_union != 0, interest_intersection / interest_union, 0)
-    language_intersection = potential_matches['Languages'].apply(lambda x: len(set(current_user['Languages']) & set(x)))
-    language_union = potential_matches['Languages'].apply(lambda x: len(set(current_user['Languages']) | set(x)))
-    language_scores = np.where(language_union != 0, language_intersection / language_union, 0)
+    gender_scores = (current_user['Gender_Preference'] == potential_matches['Gender']).astype(int)
+    location_scores = (current_user['Location'] == potential_matches['Location']).astype(int)
+    interest_scores = potential_matches['Interests'].apply(
+        lambda x: len(set(current_user['Interests']) & set(x)) / len(set(current_user['Interests']) | set(x))
+        if len(set(current_user['Interests']) | set(x)) > 0 else 0
+    )
+    language_scores = potential_matches['Languages'].apply(
+        lambda x: len(set(current_user['Languages']) & set(x)) / len(set(current_user['Languages']) | set(x))
+        if len(set(current_user['Languages']) | set(x)) > 0 else 0
+    )
     age_differences = np.abs(potential_matches['Age'] - current_user['Age'])
     age_scores = custom_age_score(age_differences)
     like_adjustment = 0.05 * len(liked_users)
