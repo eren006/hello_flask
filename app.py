@@ -187,8 +187,7 @@ def compute_score(current_user_id, users,liked_users,disliked_users):
     # Convert the 'Age' column to integers
     users['Age'] = users['Age'].astype(int)
     current_user = users[users['UserID'] == current_user_id].iloc[0]
-
-    potential_matches = users[users['UserID'] != current_user_id]
+    potential_matches = users[users['UserID'] != current_user_id].copy()
     gender_scores = (current_user['Gender_Preference'] == potential_matches['Gender']).astype(int)
     location_scores = (current_user['Location'] == potential_matches['Location']).astype(int)
     interest_scores = potential_matches['Interests'].apply(
@@ -203,10 +202,10 @@ def compute_score(current_user_id, users,liked_users,disliked_users):
     age_scores = custom_age_score(age_differences)
     like_adjustment = 0.05 * len(liked_users)
     dislike_adjustment = -0.05 * len(disliked_users)
-    total_scores = np.where(gender_scores == 0, 0, 
-                            0.4 * interest_scores + 0.2 * age_scores + 
-                            0.1 * location_scores + 0.1 * language_scores + 
-                            like_adjustment + dislike_adjustment)
+    total_scores = (0.4 * interest_scores + 0.2 * age_scores + 
+                    0.1 * location_scores + 0.1 * language_scores + 
+                    like_adjustment + dislike_adjustment)
+    total_scores = np.where(gender_scores == 0, 0, total_scores)
     scores = list(zip(potential_matches['UserID'], np.round(total_scores, 2)))
     sorted_scores = sorted(scores, key=lambda x: x[1], reverse=True)
 
