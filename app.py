@@ -176,12 +176,15 @@ def edit_profile():
     conn.close()
     return render_template('edit_profile.html', profile=user, interests=predefined_interests)
 
-def custom_age_score(age_difference):
-    if 0 <= age_difference <= 3:
-        return 1
-    else:
-        max_age_diff = 10
-        return max(0, 1 - (age_difference - 3) / (max_age_diff - 3))
+def custom_age_score(age_differences):
+    age_scores = np.zeros_like(age_differences, dtype=float)
+    
+    age_scores[(age_differences >= 0) & (age_differences <= 3)] = 1.0
+    age_scores[(age_differences > 3)] = 1.0 - (age_differences[(age_differences > 3)] * 0.1)  
+    
+    age_scores[age_scores < 0] = 0
+
+    return age_scores
 
 def compute_score(current_user_id, users,liked_users,disliked_users):
     # Convert the 'Age' column to integers
