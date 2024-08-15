@@ -322,6 +322,7 @@ def delete():
     userID = session['user_id']
     session.clear()
     conn = get_db_connection()
+    cur = conn.cursor()
     conn.execute(''' DELETE FROM records WHERE userA = ? OR userB = ? ''',(userID,userID))
     conn.execute(''' DELETE FROM User WHERE UserID = ? ''',(userID,))
     conn.commit()
