@@ -9,6 +9,12 @@ app.secret_key = 'flask'
 
 
 def get_db_connection():
+    """
+    Establishes a connection to the SQLite Cloud database using an API key and database name.
+
+    Returns:
+        sqlitecloud.Connection: An active connection to the SQLite Cloud database.
+    """
     db_name = 'dating_app_test2'
     # Open the connection to SQLite Cloud
     conn = sqlitecloud.connect("sqlitecloud://cbgnacvcik.sqlite.cloud:8860?apikey=Mx2cK8ScRiNgZl31SFhJCezNWBXAtRBbtsdvvBVA5xw")
@@ -19,10 +25,27 @@ def get_db_connection():
 
 @app.route('/')
 def home():
+    """
+    Redirects users to the login page.
+
+    Returns:
+        flask.Response: A redirection to the login page.
+    """
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Handles user authentication. Users provide their `username` and `password`,
+    which are checked against the `User` table in the database.
+
+    Methods:
+        GET: Renders the login form.
+        POST: Authenticates the user and redirects to the dashboard.
+
+    Returns:
+        flask.Response: The rendered login page (GET) or a redirection to the dashboard (POST).
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -42,6 +65,17 @@ def login():
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
+    """
+    Allows new users to create a profile by submitting their details. The user's 
+    profile data is stored in the `User` table in the database.
+
+    Methods:
+        GET: Renders the user creation form.
+        POST: Processes the form submission and stores the new user in the database.
+
+    Returns:
+        flask.Response: The rendered user creation page (GET) or a redirection to the login page (POST).
+    """
     predefined_interests = [
     'Art', 'Badminton', 'Baking', 'Baseball', 'Basketball', 'Boxing', 'Chess',
     'Coding', 'Cooking', 'Crafting', 'Cycling', 'Dancing', 'Drawing', 'Exercising',
@@ -86,6 +120,14 @@ def create():
 
 @app.route('/dashboard')
 def dashboard():
+    """
+    Displays the logged-in user's profile information and lists the users 
+    they have liked and matched with. Retrieves the relevant data from the `User`
+    and `Records` tables.
+
+    Returns:
+        flask.Response: The rendered dashboard page with the user's profile information and interactions.
+    """
     if 'user_id' not in session:
         flash('Please log in to access your dashboard.', 'danger')
         return redirect(url_for('login'))
@@ -133,6 +175,18 @@ def dashboard():
     
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
+    """
+    Allows the logged-in user to update their profile information, including name, age, 
+    gender, preferences, and interests. The updated data is saved in the `User` table.
+
+    Methods:
+        GET: Renders the profile edit form.
+        POST: Processes the form submission and updates the user's profile in the database.
+
+    Returns:
+        flask.Response: The rendered profile edit page (GET) or a redirection to the dashboard (POST).
+    """
+
     predefined_interests = [
     'Art', 'Badminton', 'Baking', 'Baseball', 'Basketball', 'Boxing', 'Chess',
     'Coding', 'Cooking', 'Crafting', 'Cycling', 'Dancing', 'Drawing', 'Exercising',
@@ -177,6 +231,16 @@ def edit_profile():
     return render_template('edit_profile.html', profile=user, interests=predefined_interests)
 
 def custom_age_score(age_differences):
+    """
+    Calculates a score based on the age difference between users. The smaller the age difference,
+    the higher the score.
+
+    Parameters:
+        age_difference (int): The difference in age between two users.
+
+    Returns:
+        float: The calculated score for the given age difference.
+    """
     age_scores = np.zeros_like(age_differences, dtype=float)
     
     age_scores[(age_differences >= 0) & (age_differences <= 3)] = 1.0
@@ -187,6 +251,17 @@ def custom_age_score(age_differences):
     return age_scores
 
 def compute_score(current_user_id, users,liked_users,disliked_users):
+    """
+    Computes the matching score between a user and a potential match by considering various
+    factors such as interests, location, language preferences, and age difference.
+
+    Parameters:
+        user (pandas.Series): The current user's data.
+        potential_match (pandas.Series): The potential match's data.
+
+    Returns:
+        float: The calculated matching score.
+    """
     # Convert the 'Age' column to integers
     users['Age'] = users['Age'].astype(int)
     current_user = users[users['UserID'] == current_user_id].iloc[0]
@@ -216,6 +291,13 @@ def compute_score(current_user_id, users,liked_users,disliked_users):
 
 @app.route('/matching', methods=['GET'])
 def matching():
+    """
+    Displays a potential match for the logged-in user by filtering out users they've already 
+    interacted with and ranking the remaining users using the scoring algorithm.
+
+    Returns:
+        flask.Response: The rendered matching page with the top potential match.
+    """
     if 'user_id' not in session:
         flash('Please log in to access the matching page.', 'danger')
         return redirect(url_for('login'))
@@ -265,6 +347,16 @@ def matching():
 
 @app.route('/like', methods=['POST'])
 def like():
+    """
+    Handles the "like" interaction between the logged-in user and a potential match. 
+    If the other user has also liked the current user, the match is recorded in the `Records` table.
+
+    Parameters:
+        match_user_id (str): The UserID of the user being liked.
+
+    Returns:
+        flask.Response: A redirection to the matching page.
+    """
     user_id = session['user_id']
     liked_user_id = request.form['liked_user_id']
 
@@ -298,6 +390,16 @@ def like():
 
 @app.route('/dislike', methods=['POST'])
 def dislike():
+    """
+    Handles the "dislike" interaction between the logged-in user and a potential match by 
+    recording the interaction in the `Records` table.
+
+    Parameters:
+        match_user_id (str): The UserID of the user being disliked.
+
+    Returns:
+        flask.Response: A redirection to the matching page.
+    """
     user_id = session['user_id']
     disliked_user_id = request.form['liked_user_id']
 
@@ -311,6 +413,13 @@ def dislike():
 
 @app.route('/delete', methods=['POST'])
 def delete():
+    """
+    Deletes the logged-in user's profile and all related interactions from the `User` 
+    and `Records` tables. The user is also logged out by clearing the session.
+
+    Returns:
+        flask.Response: A redirection to the login page after deletion.
+    """
     userID = session['user_id']
     session.clear()
     conn = get_db_connection()
