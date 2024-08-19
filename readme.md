@@ -10,7 +10,7 @@ The application allows users to create profiles, search for potential matches ba
 - **Dislike Function**: Users can dislike other profiles.
 
 ## Steps
-1. git clone https://github.com/yourusername/dating-app.git
+1. git clone https://github.com/eren006/team_11_dating_app.git
 2. Install the required packages
 3. Set up SQLite Cloud database
 4. Run the application:python app.py
