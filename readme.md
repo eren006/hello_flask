@@ -11,7 +11,7 @@ The application allows users to create profiles, search for potential matches ba
 
 ## Steps
 1. git clone https://github.com/eren006/team_11_dating_app.git
-2. Install the required packages
+2. Install the required packages(eg. flask, sqlite)
 3. Set up SQLite Cloud database
 4. Run the application:python app.py
 5. Open your browser and navigate to http://127.0.0.1:5000/ to access the application
