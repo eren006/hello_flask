@@ -1,27 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import sqlitecloud
+from database import DatabaseManager
 import numpy as np
 import pandas as pd
+
 
 
 app = Flask(__name__)
 app.secret_key = 'flask'
 
-
-def get_db_connection():
-    """
-    Establishes a connection to the SQLite Cloud database using an API key and database name.
-
-    Returns:
-        sqlitecloud.Connection: An active connection to the SQLite Cloud database.
-    """
-    db_name = 'dating_app_test2'
-    # Open the connection to SQLite Cloud
-    conn = sqlitecloud.connect("sqlitecloud://cbgnacvcik.sqlite.cloud:8860?apikey=Mx2cK8ScRiNgZl31SFhJCezNWBXAtRBbtsdvvBVA5xw")
-    conn.execute(f"USE DATABASE {db_name}")
-    print("DB connection has been established ")
-
-    return conn
+# Create an instance of the DatabaseManager class
+db_manager = DatabaseManager(db_name='dating_app_test2')
 
 @app.route('/')
 def home():
@@ -49,9 +37,9 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        conn = get_db_connection()
-        user = conn.execute("SELECT * FROM user WHERE UserId = ? AND password = ?", (username, password)).fetchone()
-        conn.close()
+        query = "SELECT * FROM user WHERE UserId = ? AND password = ?"
+        params=(username,password)
+        user = db_manager.fetch_one(query=query,params=params)
         print(user)
         if user:
             print("Login successfull!")
@@ -93,7 +81,6 @@ def create():
         age = request.form['age']
         gender = request.form['gender']
         gender_preference = request.form['gender_preference']
-        province = request.form['province']
         city = request.form['city']
         smoking = request.form['smoking']== 'true' 
         drinking = request.form['drinking']== 'true' 
@@ -105,13 +92,9 @@ def create():
             selected_interests.append('drinking')
         interests_str = ','.join(selected_interests)
         languages_str= ','.join(languages)
-        conn = get_db_connection()
-        conn.execute('''INSERT INTO User 
-               (UserID, password, name, age, gender, gender_preference, location, interests,languages) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-               (user_id, password, name, age, gender, gender_preference, city, interests_str,languages_str))
-        conn.commit()
-        conn.close()
+        query = "INSERT INTO User (UserID, password, name, age, gender, gender_preference, location, interests,languages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        params= (user_id, password, name, age, gender, gender_preference, city, interests_str,languages_str)
+        db_manager.execute_query(query=query,params=params)
         print("Profile created successfully!!")
         flash('Profile created successfully!', 'success')
         return redirect(url_for('login'))
@@ -132,10 +115,9 @@ def dashboard():
         flash('Please log in to access your dashboard.', 'danger')
         return redirect(url_for('login'))
 
-    conn = get_db_connection()
-    
-    # Fetch the user's profile
-    user = conn.execute('SELECT * FROM User WHERE UserID = ?', (session['user_id'],)).fetchone()
+    query = "SELECT * FROM User WHERE UserID = ?"
+    params = (session['user_id'],)
+    user = db_manager.fetch_one(query=query,params=params)
 
     if user:
         profile = {
@@ -149,25 +131,20 @@ def dashboard():
             "Interests": user[5].split(',')
         }
 
-        # Fetch the list of liked users
-        liked_users = conn.execute('''SELECT UserID, Name FROM User
-                                      WHERE UserID IN (SELECT UserA FROM Records WHERE UserB = ? AND Liked = 1)''',
-                                      (session['user_id'],)).fetchall()
+        query = "SELECT UserID, Name FROM User WHERE UserID IN (SELECT UserA FROM Records WHERE UserB = ? AND Liked = 1)"
+        params = (session['user_id'],)
+        liked_users = db_manager.fetch_all(query=query,params=params)
         
-        # Fetch the list of matched users
-        matched_users = conn.execute('''SELECT UserID, Name, Age, Gender, Gender_Preference, Location, Languages, Interests FROM User
-                                        WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Match = 1)''',
-                                        (session['user_id'],)).fetchall()
+        query = "SELECT UserID, Name, Age, Gender, Gender_Preference, Location, Languages, Interests FROM User WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Match = 1)"
+        params = (session['user_id'],)
+        matched_users = db_manager.fetch_all(query=query,params=params)
         
-
-        conn.close()
-
-        # Count the number of likes, dislikes, and matches
+        # Count the number of likes
         likes_count = len(liked_users)
 
         return render_template('dashboard.html', profile=profile, likes_count=likes_count, matched_users=matched_users)
     else:
-        conn.close()
+        print("User not found")
         flash('User not found.', 'danger')
         return redirect(url_for('login'))
 
@@ -199,8 +176,10 @@ def edit_profile():
         flash('Please log in to access your profile.', 'danger')
         return redirect(url_for('login'))
     
-    conn = get_db_connection()
-    user = conn.execute('SELECT * FROM User WHERE userID = ?', (session['user_id'],)).fetchone()
+    query = "SELECT * FROM User WHERE userID = ?"
+    params = (session['user_id'],)
+    user = db_manager.fetch_one(query=query,params=params)
+    print(user)
 
     if request.method == 'POST':
         # Process the form data and update the user's profile in the database
@@ -208,7 +187,6 @@ def edit_profile():
         new_age = request.form['age']
         new_gender = request.form['gender']
         new_gender_preference = request.form['gender_preference']
-        new_province = request.form['province']
         new_city = request.form['city']
         new_smoking = request.form['smoking']
         new_drinking = request.form['drinking']
@@ -219,15 +197,13 @@ def edit_profile():
         if new_drinking == True:
             new_interests.append('drinking')
         new_interests = ','.join(request.form.getlist('interests'))
-        conn.execute('''UPDATE User SET name = ?, age = ?, gender = ?, gender_preference = ?, location = ?, languages = ?, interests = ? WHERE UserID = ?''',
-                     (new_name, new_age, new_gender, new_gender_preference,new_city,new_languages, new_interests, session['user_id']))
-        conn.commit()
-        conn.close()
+        query = "UPDATE User SET name = ?, age = ?, gender = ?, gender_preference = ?, location = ?, languages = ?, interests = ? WHERE UserID = ?"
+        params = (new_name, new_age, new_gender, new_gender_preference,new_city,new_languages, new_interests, session['user_id'])
+        db_manager.execute_query(query=query,params=params)
         print("Profile updated successfully!")
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('dashboard'))
 
-    conn.close()
     return render_template('edit_profile.html', profile=user, interests=predefined_interests)
 
 def custom_age_score(age_differences):
@@ -305,29 +281,28 @@ def matching():
     current_user_id = session['user_id']
     print("Current User ID:", current_user_id)
 
-    conn = get_db_connection()
+    conn = db_manager.get_db_connection()
     users = pd.read_sql('SELECT * FROM User', conn)
-    # print(users)
+
     # Fetch list of other_user_ids that have already been interacted with by the current user (UserA)
     interacted_users_query = " SELECT UserB FROM Records WHERE UserA = '{}'".format(current_user_id)
     interacted_users = pd.read_sql(interacted_users_query, conn)
     interacted_user_ids_list=interacted_users['UserB'].tolist()
+    
     # Convert the list of interacted user IDs to a set for easy lookup
     interacted_user_ids = set(interacted_user_ids_list)
+    
     # Filter out users who have already been interacted with
     users = users[~users['UserID'].isin(interacted_user_ids)]
     conn.close()
 
-    conn = get_db_connection()
-    liked_users = conn.execute('''SELECT UserID, Name FROM User
-                                      WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Liked = 1)''',
-                                      (current_user_id,)).fetchall()
-
-        # Fetch the list of disliked users
-    disliked_users = conn.execute('''SELECT UserID, Name FROM User
-                                         WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Disliked = 1)''',
-                                         (current_user_id,)).fetchall()
-    conn.close()
+    query = "SELECT UserID, Name FROM User WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Liked = 1)"
+    params = (current_user_id,)
+    liked_users = db_manager.fetch_all(query=query,params=params)
+    
+    query = "SELECT UserID, Name FROM User WHERE UserID IN (SELECT UserB FROM Records WHERE UserA = ? AND Disliked = 1)"
+    params = (current_user_id,)
+    disliked_users = db_manager.fetch_all(query=query,params=params)
 
     sorted_matches = compute_score(current_user_id, users,liked_users, disliked_users)
     print("Sorted Matches:", sorted_matches)
@@ -359,32 +334,23 @@ def like():
     """
     user_id = session['user_id']
     liked_user_id = request.form['liked_user_id']
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    # Check if there is a record (0, 1, 0, liked_user_id, user_id) in the Records table
-    cursor.execute('''SELECT * FROM Records WHERE Match = 0 AND Liked = 1 AND Disliked = 0 AND UserA = ? AND UserB = ?''', 
-                   (liked_user_id, user_id))
-    existing_record = cursor.fetchone()
+    
+    query = "SELECT * FROM Records WHERE Match = 0 AND Liked = 1 AND Disliked = 0 AND UserA = ? AND UserB = ?"
+    params =  (liked_user_id, user_id)
+    existing_record = db_manager.fetch_one(query=query,params=params)
 
     if existing_record:
-        # If there is a matching record, insert with Match = 1
-        cursor.execute('''UPDATE Records 
-                          SET Match = 1
-                          WHERE Match = 0 AND Liked = 1 AND Disliked = 0 AND UserA = ? AND UserB = ?''', 
-                       (liked_user_id, user_id))
-        cursor.execute('''INSERT INTO Records (Match, Liked, Disliked, UserA, UserB)
-                          VALUES (1, 1, 0, ?, ?)''', 
-                       (user_id, liked_user_id))
+        query = "UPDATE Records SET Match = 1 WHERE Match = 0 AND Liked = 1 AND Disliked = 0 AND UserA = ? AND UserB = ?"
+        params = (liked_user_id, user_id)
+        db_manager.execute_query(query=query,params=params)
+        
+        query = "INSERT INTO Records (Match, Liked, Disliked, UserA, UserB) VALUES (1, 1, 0, ?, ?)"
+        params = (user_id, liked_user_id)
+        db_manager.execute_query(query=query,params=params)
     else:
-        # Otherwise, insert with Match = 0
-        cursor.execute('''INSERT INTO Records (Match, Liked, Disliked, UserA, UserB)
-                          VALUES (0, 1, 0, ?, ?)''', 
-                       (user_id, liked_user_id))
-
-    conn.commit()
-    conn.close()
+        query = "INSERT INTO Records (Match, Liked, Disliked, UserA, UserB) VALUES (0, 1, 0, ?, ?)"
+        params = (user_id, liked_user_id)
+        db_manager.execute_query(query=query,params=params)
 
     return redirect(url_for('matching'))
 
@@ -402,12 +368,11 @@ def dislike():
     """
     user_id = session['user_id']
     disliked_user_id = request.form['liked_user_id']
-
-    conn = get_db_connection()
-    conn.execute('''INSERT INTO Records (Match, Liked, Disliked,UserA, UserB)
-                    VALUES (0, 0, 1, ?, ?)''', (user_id, disliked_user_id))
-    conn.commit()
-    conn.close()
+    
+    query = "INSERT INTO Records (Match, Liked, Disliked,UserA, UserB)VALUES (0, 0, 1, ?, ?)"
+    params = (user_id, disliked_user_id)
+    db_manager.execute_query(query=query,params=params)
+    
 
     return redirect(url_for('matching'))
 
@@ -422,12 +387,14 @@ def delete():
     """
     userID = session['user_id']
     session.clear()
-    conn = get_db_connection()
-    cur = conn.cursor()
-    conn.execute(''' DELETE FROM records WHERE userA = ? OR userB = ? ''',(userID,userID))
-    conn.execute(''' DELETE FROM User WHERE UserID = ? ''',(userID,))
-    conn.commit()
-    conn.close()
+    
+    query = "DELETE FROM records WHERE userA = ? OR userB = ?"
+    params = (userID,userID)
+    db_manager.execute_query(query=query,params=params)
+    
+    query = "DELETE FROM User WHERE UserID = ?"
+    params = (userID,)
+    db_manager.execute_query(query=query,params=params)
 
     return redirect(url_for('login'))
 
