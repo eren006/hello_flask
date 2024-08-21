@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='styles.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
     <style>
       .dashboard-container {
         background-color: #fff;
@@ -80,6 +77,7 @@
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: left; /* Align text to the left */
+        display: none; /* Initially hide the matches section */
       }
 
       .match-item {
@@ -134,6 +132,7 @@
       .button-container a:hover {
         background-color: #d81b60;
       }
+
       .delete-button {
         background-color: #ff1744;
         color: white;
@@ -151,6 +150,26 @@
 
       .delete-button:hover {
         background-color: #d50000;
+      }
+      
+      /* Toggle Button Styling */
+      .toggle-button {
+        background-color: #ec407a;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .toggle-button:hover {
+        background-color: #d81b60;
       }
     </style>
   </head>
@@ -202,7 +221,10 @@
         <div class="like-dislike-item">{{ likes_count }} Likes</div>
       </div>
 
-      <div class="matches-container">
+      <!-- Toggle Button for Matches -->
+      <button class="toggle-button" onclick="toggleMatches()">Show/Hide Matches</button>
+
+      <div id="matches-container" class="matches-container">
         <h2>Your Matches</h2>
         {% for user in matched_users %}
         <div class="match-item">
@@ -234,5 +256,17 @@
         <button type="submit" class="delete-button">Delete Account</button>
       </form>
     </div>
+
+    <!-- JavaScript to toggle the matches section -->
+    <script>
+      function toggleMatches() {
+        var matchesContainer = document.getElementById('matches-container');
+        if (matchesContainer.style.display === 'none' || matchesContainer.style.display === '') {
+          matchesContainer.style.display = 'block';
+        } else {
+          matchesContainer.style.display = 'none';
+        }
+      }
+    </script>
   </body>
 </html>
