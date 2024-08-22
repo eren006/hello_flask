@@ -52,11 +52,33 @@
                 alert(message);
             }
         }
+
+        function validateForm() {
+            const languageCheckboxes = document.querySelectorAll('input[name="languages"]:checked');
+            const hobbyCheckboxes = document.querySelectorAll('input[name="interests"]:checked');
+
+            if (languageCheckboxes.length === 0) {
+                alert("You must select at least one language.");
+                return false;
+            }
+
+            if (hobbyCheckboxes.length === 0) {
+                alert("You must select at least one hobby.");
+                return false;
+            }
+
+            if (hobbyCheckboxes.length > 3) {
+                alert("You can select up to 3 hobbies only.");
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </head>
 <body>
     <div class="create-container content">
-        <form method="POST" action="{{ url_for('create') }}">
+        <form method="POST" action="{{ url_for('create') }}" onsubmit="return validateForm();">
             <h2>Create Profile</h2>
 
             <label for="user_id">User ID:</label>
