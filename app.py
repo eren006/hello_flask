@@ -40,7 +40,7 @@ def login():
         query = "SELECT * FROM user WHERE UserId = ? AND password = ?"
         params=(username,password)
         user = db_manager.fetch_one(query=query,params=params)
-        print(user)
+        print("User is: ",user)
         if user:
             print("Login successfull!")
             session['user_id'] = user[4]
