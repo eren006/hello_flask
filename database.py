@@ -1,7 +1,6 @@
 # database.py
 import sqlitecloud
-import pandas as pd
-import numpy as np
+
 
 class DatabaseManager:
     def __init__(self, db_name):

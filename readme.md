@@ -1,6 +1,8 @@
-Rotmantic a simple dating application built using Flask and SQLite Cloud. 
-The application allows users to create profiles, search for potential matches based on various criteria, and interact with other users by liking or disliking their profiles. 
+Rotmantic a simple dating application built using Flask and SQLite Cloud.
+The application allows users to create profiles, search for potential matches based on various criteria, and interact with other users by liking or disliking their profiles.
+
 ## Features
+
 - **User Authentication**: Users can log in and out of the application securely.
 - **Profile Creation**: New users can create a profile by providing their personal details, interests, and language preferences.
 - **Profile Editing**: Users can update their profile information anytime.
@@ -10,13 +12,15 @@ The application allows users to create profiles, search for potential matches ba
 - **Dislike Function**: Users can dislike other profiles.
 
 ## Steps
+
 1. git clone https://github.com/eren006/team_11_dating_app.git
-2. Install the required packages(eg. flask, sqlite)
-3. Set up SQLite Cloud database
+2. Install the required packages(flask, sqlitecloud, pandas, numpy)
+3. Set up SQLite Cloud database(pip install sqlitecloud)
 4. Run the application:python app.py
 5. Open your browser and navigate to http://127.0.0.1:5000/ to access the application
 
 ## Database Schema
+
 The application uses two main tables:
 
 ## User Table
