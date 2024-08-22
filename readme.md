@@ -43,6 +43,10 @@ The application uses two main tables:
 - **Liked**: Whether UserA liked UserB (1 for yes, 0 for no).
 - **Disliked**: Whether UserA disliked UserB (1 for yes, 0 for no).
 
+## Test Cases
+
+- Few test cases have been written in test_app.py. You can simply just run that code and run the test cases.
+
 ## Github Link
 
 https://github.com/eren006/team_11_dating_app
