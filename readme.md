@@ -42,3 +42,7 @@ The application uses two main tables:
 - **Match**: Whether the two users have matched (1 for yes, 0 for no).
 - **Liked**: Whether UserA liked UserB (1 for yes, 0 for no).
 - **Disliked**: Whether UserA disliked UserB (1 for yes, 0 for no).
+
+## Github Link
+
+https://github.com/eren006/team_11_dating_app
