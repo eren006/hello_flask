@@ -60,20 +60,17 @@ def create():
     Methods:
         GET: Renders the user creation form.
         POST: Processes the form submission and stores the new user in the database.
-
-    Returns:
-        flask.Response: The rendered user creation page (GET) or a redirection to the login page (POST).
     """
     predefined_interests = [
-    'Art', 'Badminton', 'Baking', 'Baseball', 'Basketball', 'Boxing', 'Chess',
-    'Coding', 'Cooking', 'Crafting', 'Cycling', 'Dancing', 'Drawing', 'Exercising',
-    'Fitness', 'Gaming', 'Gardening', 'Guitar', 'Hiking', 'Meditation', 'Music',
-    'Painting', 'Photography', 'Playing computer games', 'Playing the piano',
-    'Reading', 'Running', 'Singing', 'Skateboarding', 'Skating', 'Soccer',
-    'Surfing', 'Swimming', 'Traveling', 'Videography', 'Watching movies', 'Writing', 'Yoga'
-]
+        'Art', 'Badminton', 'Baking', 'Baseball', 'Basketball', 'Boxing', 'Chess',
+        'Coding', 'Cooking', 'Crafting', 'Cycling', 'Dancing', 'Drawing', 'Exercising',
+        'Fitness', 'Gaming', 'Gardening', 'Guitar', 'Hiking', 'Meditation', 'Music',
+        'Painting', 'Photography', 'Playing computer games', 'Playing the piano',
+        'Reading', 'Running', 'Singing', 'Skateboarding', 'Skating', 'Soccer',
+        'Surfing', 'Swimming', 'Traveling', 'Videography', 'Watching movies', 'Writing', 'Yoga'
+    ]
 
-
+    message = None
     if request.method == 'POST':
         user_id = request.form['user_id']
         password = request.form['password']
@@ -81,25 +78,39 @@ def create():
         age = request.form['age']
         gender = request.form['gender']
         gender_preference = request.form['gender_preference']
+        province = request.form['province']
         city = request.form['city']
-        smoking = request.form['smoking']== 'true' 
-        drinking = request.form['drinking']== 'true' 
+        smoking = request.form['smoking'] == 'true'
+        drinking = request.form['drinking'] == 'true'
         languages = request.form.getlist('languages')
         selected_interests = request.form.getlist('interests')
-        if smoking == True:
+        if smoking:
             selected_interests.append('smoking')
-        if drinking == True:
+        if drinking:
             selected_interests.append('drinking')
         interests_str = ','.join(selected_interests)
-        languages_str= ','.join(languages)
-        query = "INSERT INTO User (UserID, password, name, age, gender, gender_preference, location, interests,languages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        params= (user_id, password, name, age, gender, gender_preference, city, interests_str,languages_str)
-        db_manager.execute_query(query=query,params=params)
-        print("Profile created successfully!!")
-        flash('Profile created successfully!', 'success')
-        return redirect(url_for('login'))
+        languages_str = ','.join(languages)
+
+        # Check if the user ID already exists
+        query = "SELECT * FROM User WHERE UserID = ?"
+        params = (user_id,)
+        existing_user = db_manager.fetch_one(query=query, params=params)
+        
+        if existing_user:
+            message = 'User ID already exists. Please choose a different User ID.'
+            return render_template('create.html', interests=predefined_interests, message=message)
+        
+        # If user ID does not exist, proceed to create the profile
+        query = "INSERT INTO User (UserID, password, name, age, gender, gender_preference, location, interests, languages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        location = f"{province}, {city}"
+        params = (user_id, password, name, age, gender, gender_preference, location, interests_str, languages_str)
+        db_manager.execute_query(query=query, params=params)
+        
+        message = 'Profile created successfully!'
+        return render_template('create.html', interests=predefined_interests, message=message)
 
     return render_template('create.html', interests=predefined_interests)
+
 
 @app.route('/dashboard')
 def dashboard():
