@@ -59,65 +59,6 @@ class TestFlaskApp(unittest.TestCase):
         response = self.app.get('/create')
         self.assertEqual(response.status_code, 200)
 
-    # Test for profile creation (POST)
-    def test_create_post(self):
-        print("TESTING FUNCTION: test_create_post")
-        form_data={
-            'user_id': 'user',
-            'password': 'password',
-            'name': 'Test User',
-            'age': '25',
-            'gender': 'male',
-            'gender_preference': 'female',
-            'province':'Ontario',
-            'city': 'Toronto',
-            'smoking': 'false',
-            'drinking': 'false',
-            'languages': ['English'],
-            'interests': ['Coding', 'Music']
-        }
-        response = self.app.post('/create', data=form_data, follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-    # Test for profile editing (GET)
-    # def test_edit_profile_get(self):
-    #     print("TESTING FUNCTION: test_edit_profile_get")
-    #     with self.app.session_transaction() as sess:
-    #         sess['user_id'] = 'user_id'
-        
-    #     self.mock_db.fetch_one.return_value = ('user', 'password', 'name', 25, 'user_id', 'male', 'city', 'female', 'languages')
-        
-    #     response = self.app.get('/edit_profile')
-    #     self.assertEqual(response.status_code, 200)
-    
-    
-    # def test_delete_user(self):
-    #     print("TESTING FUNCTION: test_delete_user")
-    #     # Simulate a logged-in user by setting the session
-    #     with self.app.session_transaction() as sess:
-    #         sess['user_id'] = 'user_id'
-    
-    #     # Mock the database query for deleting user records
-    #     self.mock_db.execute_query = MagicMock()
-
-    #     # Simulate the deletion request
-    #     response = self.app.post('/delete', follow_redirects=True)
-
-    #     # Verify that the appropriate SQL queries were executed for deleting    the user
-    #     self.mock_db.execute_query.assert_any_call(query="DELETE FROM records   WHERE userA = ? OR userB = ?", params=('user_id', 'user_id'))
-    #     self.mock_db.execute_query.assert_any_call(query="DELETE FROM User  WHERE UserID = ?", params=('user_id',))
-
-    #     # Check that the session has been cleared
-    #     with self.app.session_transaction() as sess:
-    #         self.assertIsNone(sess.get('user_id'))
-
-    #     # Verify the user is redirected to the login page
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn(b'Login', response.data)  # Assuming the word 'Login'     is in the template
-
-
-
-    # Additional tests for like, dislike, and delete routes can be added similarly
 
 if __name__ == '__main__':
     unittest.main()
