@@ -27,11 +27,7 @@
             const provinceSelect = document.getElementById("province");
             const citySelect = document.getElementById("city");
 
-            console.log("Province select element:", provinceSelect);
-            console.log("City select element:", citySelect);
-
             provinceSelect.addEventListener("change", function() {
-                console.log("Province changed");
                 const selectedProvince = this.value;
                 const cities = provinces[selectedProvince];
 
@@ -50,6 +46,12 @@
                 }
             });
         });
+
+        function showAlert(message) {
+            if (message) {
+                alert(message);
+            }
+        }
     </script>
 </head>
 <body>
@@ -111,17 +113,16 @@
             </div>
 
             <label for="smoking">Smoking:</label>
-                <select id="smoking" name="smoking" required>
-                <option value="true">Accept</option>
-                     <option value="false">Do Not Accept</option>
-            </select>
-
-            <label for="drinking">Drinking:</label>
-                <select id="drinking" name="drinking" required>
+            <select id="smoking" name="smoking" required>
                 <option value="true">Accept</option>
                 <option value="false">Do Not Accept</option>
             </select>
 
+            <label for="drinking">Drinking:</label>
+            <select id="drinking" name="drinking" required>
+                <option value="true">Accept</option>
+                <option value="false">Do Not Accept</option>
+            </select>
 
             <label for="languages">Language Preference:</label>
             <div class="languages-grid">
@@ -161,5 +162,11 @@
             <a href="{{ url_for('login') }}" class="back-to-login-button">Back to Login</a>
         </form>
     </div>
+
+    {% if message %}
+    <script>
+        showAlert("{{ message }}");
+    </script>
+    {% endif %}
 </body>
 </html>
