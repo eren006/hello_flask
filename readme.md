@@ -45,7 +45,7 @@ The application uses two main tables:
 
 ## Test Cases
 
-- Few test cases have been written in test_app.py. You can simply just run that code and run the test cases.
+- Few test cases have been written in test_app.py. You can simply just run that code and run the test cases. Please ensure the original flask project is running as well.
 
 ## Github Link
 
